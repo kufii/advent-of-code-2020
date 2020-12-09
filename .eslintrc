@@ -1,0 +1,11 @@
+
+{
+  "extends": ["eslint-config-synacor", "adpyke-es6", "prettier"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "semi": "off"
+  }
+}
