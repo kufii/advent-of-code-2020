@@ -1,3 +1,7 @@
 import { m } from '/vdom'
 
-export const Icon = ({ name }) => m(`i.icon.icon-${name}`)
+interface Props {
+  name: string
+}
+
+export const Icon = ({ name }: Props) => m(`i.icon.icon-${name}`)

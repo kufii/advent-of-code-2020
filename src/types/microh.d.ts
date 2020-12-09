@@ -14,8 +14,16 @@ declare module 'microh' {
 
   type VnodeFn<H extends AnyFn> = {
     (tag: string, ...children: Child<H>[]): ReturnType<H>
-    (tag: string, props: Record<string, unknown>, ...children: Child<H>[]): ReturnType<H>
-    <T extends AnyFn>(tag: T, props: Parameters<T>[0], ...children: Child<H>[]): ReturnType<H>
+    (
+      tag: string,
+      props: Record<string, unknown>,
+      ...children: Child<H>[]
+    ): ReturnType<H>
+    <T extends AnyFn>(
+      tag: T,
+      props: Parameters<T>[0],
+      ...children: Child<H>[]
+    ): ReturnType<H>
     <T extends AnyFn>(tag: T, ...children: Child<H>[]): ReturnType<H>
   }
 
