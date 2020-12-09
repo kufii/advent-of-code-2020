@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "build-watch": "parcel src/index.html --host 127.0.0.1 --port 5510 --open",
     "build": "parcel build src/index.html --experimental-scope-hoisting",
     "build:gh": "parcel build src/index.html --experimental-scope-hoisting --public-url ./",
@@ -19,6 +20,10 @@
     "not ie > 0",
     "not op_mini all"
   ],
+  "resolutions": {
+    "node-forge": "0.10.0",
+    "yargs-parser": "^13.1.2"
+  },
   "devDependencies": {
     "eslint": "^6.0.1",
     "eslint-config-adpyke-es6": "^1.4.13",
@@ -27,12 +32,13 @@
     "eslint-plugin-import": "^2.22.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-bundle-visualiser": "^1.2.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.2"
   },
   "dependencies": {
     "microh": "^0.1.0",
     "preact": "^10.1.0",
     "spectre.css": "^0.5.9",
-    "zaftig": "^0.9.2"
+    "zaftig": "^0.10.0"
   }
 }

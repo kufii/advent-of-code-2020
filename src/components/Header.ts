@@ -2,7 +2,7 @@ import { m } from '/vdom'
 import { useState } from 'preact/hooks'
 import { Dropdown } from '/components'
 
-export const App = () => {
+export const Header = () => {
   const [day, setDay] = useState('1')
   return m(
     'header.navbar.p-2.bg-primary.text-light',
@@ -20,7 +20,7 @@ export const App = () => {
           { key: '2', text: 'Day 2' },
           { key: '3', text: 'Day 3' }
         ],
-        textColor: 'text-light'
+        textColor: 'light'
       })
     ])
   )
