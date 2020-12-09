@@ -1,4 +1,3 @@
-
 {
   "extends": ["eslint-config-synacor", "adpyke-es6", "prettier"],
   "env": {
