@@ -1,9 +1,9 @@
 import { m } from '/vdom'
-import { useState } from 'preact/hooks'
 import { Dropdown } from '/components'
+import { useStore, setDay } from '/store'
 
 export const Header = () => {
-  const [day, setDay] = useState('1')
+  const day = useStore(({ day }) => day);
   return m(
     'header.navbar.p-2.bg-primary.text-light',
     m('section.navbar-section', [
