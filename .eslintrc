@@ -1,10 +1,24 @@
 {
-  "extends": ["eslint-config-synacor", "adpyke-es6", "prettier"],
+  "extends": [
+    "adpyke-es6",
+    "prettier",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "settings": {
+    "import/resolver": { "parcel": { "rootDir": "src" } }
+  },
   "env": {
     "browser": true,
     "node": true
   },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
   "rules": {
-    "semi": "off"
+    "semi": "off",
+    "import/no-unresolved": ["error", { "ignore": ["^http"] }],
+    "import/order": "error"
   }
 }

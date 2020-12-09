@@ -1,5 +1,6 @@
 node_modules
-build
+dist
 /*.log
 gh-pages
 gh-pages.pub
+.cache
