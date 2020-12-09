@@ -6,7 +6,7 @@
   "scripts": {
     "build-watch": "parcel src/index.html --host 127.0.0.1 --port 5510 --open",
     "build": "parcel build src/index.html --experimental-scope-hoisting",
-    "build:gh": "parcel build src/index.html --experimental-scope-hoisting --public-url http://kufii.github.io/advent-of-code-2020",
+    "build:gh": "parcel build src/index.html --experimental-scope-hoisting --public-url ./",
     "dev": "npm run build-watch",
     "prebuild": "rm -rf dist",
     "lint": "eslint src",
