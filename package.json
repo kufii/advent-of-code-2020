@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "preact build",
+    "build:gh": "GITHUB_PAGES=advent-of-code-2020 preact build && dot-json ./build/manifest.json start_url \"/advent-of-code-2020/\"",
     "serve": "sirv build --port 8080 --cors --single",
     "dev": "preact watch",
     "lint": "eslint src",
@@ -13,6 +14,7 @@
     "check": "npm run lint && npm run check:format"
   },
   "devDependencies": {
+    "dot-json": "^1.2.1",
     "eslint": "^6.0.1",
     "eslint-config-adpyke-es6": "^1.4.13",
     "eslint-config-prettier": "^7.0.0",
