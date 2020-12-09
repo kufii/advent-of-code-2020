@@ -14,6 +14,11 @@
     "check:format": "prettier --check \"**/*.{js,jsx,md,json,css,prettierrc,eslintrc,html}\"",
     "check": "npm run lint && npm run check:format"
   },
+  "browserslist": [
+    "> 0.4%",
+    "not ie > 0",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "eslint": "^6.0.1",
     "eslint-config-adpyke-es6": "^1.4.13",
