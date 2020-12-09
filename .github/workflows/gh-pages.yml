@@ -24,7 +24,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npm run build
+      - run: npm run build:gh
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v2
