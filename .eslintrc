@@ -1,24 +1,20 @@
 {
+  "root": true,
   "extends": [
     "adpyke-es6",
-    "prettier",
-    "plugin:import/errors",
-    "plugin:import/warnings"
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
-  "settings": {
-    "import/resolver": { "parcel": { "rootDir": "src" } }
-  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "env": {
     "browser": true,
     "node": true
   },
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
   "rules": {
-    "semi": "off",
-    "import/no-unresolved": ["error", { "ignore": ["^http"] }],
-    "import/order": "error"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
