@@ -1,4 +1,4 @@
-import { m, z } from '/vdom'
+import { m, z, href } from '/vdom'
 import { Dropdown } from '/components'
 import { useStore, setDay, setPart } from '/store'
 import { range } from '/utilities'
@@ -11,7 +11,7 @@ export const Header = () => {
     m('section.navbar-section', [
       m(
         'a.navbar-brand.text-bold.mx-2.text-light',
-        { href: '/' },
+        { href: href('/') },
         'Advent of Code 2020'
       ),
       m(Dropdown, {
