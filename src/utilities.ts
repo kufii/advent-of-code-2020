@@ -27,3 +27,6 @@ export const nestedLoop = function* (
     }
   }
 }
+
+export const parse2dArray = (str: string) =>
+  str.split('\n').map((line) => [...line])
