@@ -4,8 +4,6 @@ import { useStore, setDay, setPart } from '/store'
 import { range } from '/utilities'
 import { githubIcon } from './images'
 
-console.log(githubIcon)
-
 export const Header = () => {
   const day = useStore(({ day }) => day)
   return m(
