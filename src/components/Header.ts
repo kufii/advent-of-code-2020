@@ -11,8 +11,12 @@ interface Props {
 
 export const Header = ({ day }: Props) =>
   m(
-    'header.navbar.p-2.bg-primary.text-light' +
-      z`box-shadow 0 2px 4px rgba(0, 0, 0, 0.5);`,
+    'header.navbar.p-2.bg-primary.text-light.p-sticky' +
+      z`
+        box-shadow 0 2px 4px rgba(0, 0, 0, 0.5)
+        top 0
+        z-index 1000
+      `,
     [
       m('section.navbar-section', [
         m(
@@ -37,7 +41,7 @@ export const Header = ({ day }: Props) =>
       m(
         'section.navbar-section',
         m(
-          'a.btn.btn-link.mx-2',
+          'a.btn.btn-link.mx-2.p-0',
           { href: 'https://github.com/kufii/advent-of-code-2020', ...newTab },
           m('img' + z`height 100%`, { src: githubIcon, alt: 'GitHub' })
         )
