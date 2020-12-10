@@ -36,3 +36,5 @@ export const maxBy = <T>(cb: (item: T) => number) => (a: T, b: T) =>
 
 export const minBy = <T>(cb: (item: T) => number) => (a: T, b: T) =>
   cb(b) < cb(a) ? b : a
+
+export const sortNum = (a: number, b: number) => a - b

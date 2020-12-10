@@ -1,5 +1,5 @@
 import input from './input'
-import { maxBy } from '/utilities'
+import { maxBy, sortNum } from '/utilities'
 import { m } from '/vdom'
 
 const parseInput = () => input.split('\n')
@@ -21,7 +21,7 @@ const findSeat = (
 }
 
 const findMissingSeat = (seats: number[]) => {
-  seats = seats.sort()
+  seats = seats.sort(sortNum)
   return (
     seats.find((seat, index) => index > 0 && seats[index - 1] !== seat - 1)! - 1
   )
