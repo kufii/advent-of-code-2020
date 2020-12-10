@@ -17,11 +17,14 @@ const RouteComponent = ({
   ])
 
 export const Routes = () =>
-  m(
-    Router,
+  m(Router, [
     m(Route, {
-      path: href('/:day?'),
+      default: true,
+      component: () => m(RouteComponent, { day: '1' }, m(ViewDay, { day: 1 }))
+    }),
+    m(Route, {
+      path: href('/:day'),
       component: ({ day }: { day: string }) =>
-        m(RouteComponent, { day }, m(ViewDay, { day: Number(day || 1) }))
+        m(RouteComponent, { day }, m(ViewDay, { day: Number(day) }))
     })
-  )
+  ])
