@@ -17,13 +17,20 @@ const findNumbersThatSum = (
 
 export const Part1 = () => {
   const [n1, n2] = findNumbersThatSum(parseInput(), 2020)!
-  return m('div', `Numbers ${n1} and ${n2} sum to 2020. Result is ${n1 * n2}`)
+  return m(
+    'div',
+    `Numbers ${n1} and ${n2} sum to 2020. Result is `,
+    m('strong', n1 * n2),
+    '.'
+  )
 }
 
 export const Part2 = () => {
   const [n1, n2, n3] = findNumbersThatSum(parseInput(), 2020, 3)!
   return m(
     'div',
-    `Numbers ${n1}, ${n2}, and ${n3} sum to 2020. Result is ${n1 * n2 * n3}`
+    `Numbers ${n1}, ${n2}, and ${n3} sum to 2020. Result is `,
+    m('strong', n1 * n2 * n3),
+    '.'
   )
 }

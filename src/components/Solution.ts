@@ -17,7 +17,7 @@ export const Solution = ({ part, solution }: Props) => {
     m('div.card-header', m('div.card-title.h5', `Part ${part}`)),
     m(
       'div.card-body',
-      solutionPart ? m(solutionPart) : m('p', 'Solution not yet implemented')
+      solutionPart ? m(solutionPart) : m('div', 'Solution not yet implemented')
     )
   ])
 }
