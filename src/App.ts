@@ -1,39 +1,4 @@
-import { m, newTab } from '/vdom'
-import { Header, Icon } from '/components'
-import { useStore, setPart } from '/store'
-import days from '/solutions'
-import { Solution } from './components/Solution'
+import { m } from '/vdom'
+import { Routes } from '/Routes'
 
-export const App = () => {
-  const day = useStore(({ day }) => day)
-  const part = useStore(({ part }) => part)
-  const solution = days[Number(day) - 1]
-  return m('div', [
-    m(Header),
-    m(
-      'div.container.mt-2',
-      m(
-        'div.container',
-        m(
-          'div.columns',
-          m('div.column.col-8.col-md-12.col-mx-auto', [
-            m(
-              'h1',
-              `Day ${day} Solutions `,
-              m(
-                'a',
-                { href: 'https://adventofcode.com/2020/day/' + day, ...newTab },
-                m(Icon, { name: 'link' })
-              )
-            ),
-            m('div.mb-2', [
-              m('button.btn.mr-1', { onClick: () => setPart(1) }, 'Part 1'),
-              m('button.btn', { onClick: () => setPart(2) }, 'Part 2')
-            ]),
-            part && m(Solution, { solution, part })
-          ])
-        )
-      )
-    )
-  ])
-}
+export const App = () => m(Routes)

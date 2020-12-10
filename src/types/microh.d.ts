@@ -19,12 +19,15 @@ declare module 'microh' {
       props: Record<string, unknown>,
       ...children: Child<H>[]
     ): ReturnType<H>
-    <T extends AnyFn>(
-      tag: T,
-      props: Parameters<T>[0],
+    <P>(
+      tag: import('preact').ComponentType<P>,
+      props: P,
       ...children: Child<H>[]
     ): ReturnType<H>
-    <T extends AnyFn>(tag: T, ...children: Child<H>[]): ReturnType<H>
+    <P>(
+      tag: import('preact').ComponentType<P>,
+      ...children: Child<H>[]
+    ): ReturnType<H>
   }
 
   const microh: <H extends AnyFn>(transform: H) => VnodeFn<H>

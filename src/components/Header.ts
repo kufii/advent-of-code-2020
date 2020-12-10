@@ -1,12 +1,16 @@
 import { m, z, href, newTab } from '/vdom'
 import { Dropdown } from '/components'
-import { useStore, setDay, setPart } from '/store'
+import { setPart } from '/store'
 import { range } from '/utilities'
 import { githubIcon } from './images'
+import { route } from 'preact-router'
 
-export const Header = () => {
-  const day = useStore(({ day }) => day)
-  return m(
+interface Props {
+  day: string
+}
+
+export const Header = ({ day }: Props) =>
+  m(
     'header.navbar.p-2.bg-primary.text-light' +
       z`box-shadow 0 2px 4px rgba(0, 0, 0, 0.5);`,
     [
@@ -20,7 +24,7 @@ export const Header = () => {
           selected: day,
           onSelect: (day) => {
             setPart(null)
-            setDay(day)
+            route(href('/' + day))
           },
           items: range(1, 25).map((n) => ({
             key: n.toString(),
@@ -39,4 +43,3 @@ export const Header = () => {
       )
     ]
   )
-}
