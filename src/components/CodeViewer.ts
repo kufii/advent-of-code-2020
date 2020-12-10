@@ -23,7 +23,7 @@ export const CodeViewer = ({ day }: Props) => {
         const text = await response.text()
         setCode(text)
       } catch (err) {
-        setCode('/* Failed to find code. */')
+        setCode('Not Found')
       } finally {
         setLoading(false)
       }
