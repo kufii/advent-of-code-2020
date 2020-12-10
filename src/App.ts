@@ -1,5 +1,5 @@
-import { m } from '/vdom'
-import { Header } from '/components'
+import { m, newTab } from '/vdom'
+import { Header, Icon } from '/components'
 import { useStore, setPart } from '/store'
 import days from '/solutions'
 import { Solution } from './components/Solution'
@@ -17,7 +17,15 @@ export const App = () => {
         m(
           'div.columns',
           m('div.column.col-8.col-md-12.col-mx-auto', [
-            m('h1', `Day ${day} Solutions`),
+            m(
+              'h1',
+              `Day ${day} Solutions `,
+              m(
+                'a',
+                { href: 'https://adventofcode.com/2020/day/' + day, ...newTab },
+                m(Icon, { name: 'link' })
+              )
+            ),
             m('div.mb-2', [
               m('button.btn.mr-1', { onClick: () => setPart(1) }, 'Part 1'),
               m('button.btn', { onClick: () => setPart(2) }, 'Part 2')

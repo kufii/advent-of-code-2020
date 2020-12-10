@@ -8,3 +8,4 @@ export const z = zaf
 export const m = microh(h)
 export const href = (url: string) =>
   isDev ? url : '/advent-of-code-2020' + url
+export const newTab = { target: '_blank', rel: 'noopener noreferrer' }
