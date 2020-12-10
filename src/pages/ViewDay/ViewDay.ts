@@ -27,7 +27,7 @@ export const ViewDay = ({ day }: Props) => {
           m(Icon, { name: 'link' })
         )
       ),
-      m('div.mb-2', [
+      m('div', [
         solution?.Part1 &&
           m('button.btn.mr-1', { onClick: () => setPart(1) }, 'Part 1'),
         solution?.Part2 &&
