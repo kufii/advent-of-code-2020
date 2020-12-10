@@ -1,16 +1,20 @@
 import { Icon } from '/components'
 import { Solution } from '/components/Solution'
-import { setPart, useStore } from '/store'
+import { setPart, setShowCode, useStore } from '/store'
 import { m, newTab } from '/vdom'
-import days from '/solutions'
+import days, { Solution as SolutionType } from '/solutions'
+import { CodeViewer } from '/components/CodeViewer'
 
 interface Props {
   day: number
 }
 
 export const ViewDay = ({ day }: Props) => {
-  const part = useStore(({ part }) => part)
-  const solution = days[day - 1]
+  const { part, showCode } = useStore(({ part, showCode }) => ({
+    part,
+    showCode
+  }))
+  const solution = days[day - 1] as SolutionType | undefined
   return m(
     'div.columns',
     m('div.column.col-8.col-md-12.col-mx-auto', [
@@ -24,10 +28,20 @@ export const ViewDay = ({ day }: Props) => {
         )
       ),
       m('div.mb-2', [
-        m('button.btn.mr-1', { onClick: () => setPart(1) }, 'Part 1'),
-        m('button.btn', { onClick: () => setPart(2) }, 'Part 2')
+        solution?.Part1 &&
+          m('button.btn.mr-1', { onClick: () => setPart(1) }, 'Part 1'),
+        solution?.Part2 &&
+          m('button.btn.mr-1', { onClick: () => setPart(2) }, 'Part 2'),
+        solution &&
+          m(
+            'button.btn.btn-link',
+            { onClick: () => setShowCode(!showCode) },
+            showCode ? 'Hide Code' : 'Show Code'
+          )
       ]),
-      part && m(Solution, { solution, part })
+      !solution && m('p', `Day ${day} not yet implemented.`),
+      showCode && m(CodeViewer, { day }),
+      solution && part && m(Solution, { solution, part })
     ])
   )
 }

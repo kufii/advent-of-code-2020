@@ -5,7 +5,7 @@ import * as day3 from './03'
 import * as day4 from './04'
 import * as day5 from './05'
 
-interface Solution {
+export interface Solution {
   Part1?: FunctionComponent
   Part2?: FunctionComponent
 }
