@@ -20,7 +20,8 @@ export const Header = ({ day }: Props) =>
     [
       m('section.navbar-section', [
         m(
-          'a.navbar-brand.text-bold.mx-2.text-light' + z`white-space nowrap`,
+          'a.navbar-brand.text-bold.mx-2.text-light' +
+            z`white-space nowrap; font-family monospace`,
           { href: '/' },
           'Advent of Code 2020'
         ),
