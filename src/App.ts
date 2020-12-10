@@ -16,7 +16,7 @@ export const App = () => {
         'div.container',
         m(
           'div.columns',
-          m('div.column.col-8.col-mx-auto', [
+          m('div.column.col-8.col-md-12.col-mx-auto', [
             m('h1', `Day ${day} Solutions`),
             m('div.mb-2', [
               m('button.btn.mr-1', { onClick: () => setPart(1) }, 'Part 1'),
