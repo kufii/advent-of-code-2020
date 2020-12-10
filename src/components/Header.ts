@@ -34,7 +34,7 @@ export const Header = () => {
       m(
         'section.navbar-section',
         m(
-          'a.btn.btn-link',
+          'a.btn.btn-link.mx-2',
           { href: 'https://github.com/kufii/advent-of-code-2020', ...newTab },
           m('img' + z`height 100%`, { src: githubIcon, alt: 'GitHub' })
         )
