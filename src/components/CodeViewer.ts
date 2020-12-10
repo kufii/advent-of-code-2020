@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
 import { m } from '/vdom'
+import { highlight, languages } from 'prismjs'
+import 'prismjs/components/prism-typescript'
 
 interface Props {
   day: number
@@ -21,7 +23,7 @@ export const CodeViewer = ({ day }: Props) => {
         const text = await response.text()
         setCode(text)
       } catch (err) {
-        setCode('Failed to find code.')
+        setCode('/* Failed to find code. */')
       } finally {
         setLoading(false)
       }
@@ -31,5 +33,13 @@ export const CodeViewer = ({ day }: Props) => {
 
   return loading
     ? m('div.loading.loading-lg')
-    : m('pre.code', { 'data-lang': 'TypeScript' }, m('code', code))
+    : m(
+        'pre.code',
+        { 'data-lang': 'TypeScript' },
+        m('code', {
+          dangerouslySetInnerHTML: {
+            __html: highlight(code, languages.typescript, 'typescript')
+          }
+        })
+      )
 }
