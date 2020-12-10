@@ -30,3 +30,9 @@ export const nestedLoop = function* (
 
 export const parse2dArray = (str: string) =>
   str.split('\n').map((line) => [...line])
+
+export const maxBy = <T>(cb: (item: T) => number) => (a: T, b: T) =>
+  cb(b) > cb(a) ? b : a
+
+export const minBy = <T>(cb: (item: T) => number) => (a: T, b: T) =>
+  cb(b) < cb(a) ? b : a
