@@ -13,7 +13,7 @@ export const nestedLoop = function* (
   start: number,
   end: number
 ): IterableIterator<number[]> {
-  const arr = [...Array(n)].map(() => start)
+  const arr = Array(n).fill(start)
   let i = 0
   while (true) {
     yield arr.slice()
