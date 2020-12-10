@@ -52,9 +52,9 @@ export const Dropdown = ({
         `ul.menu.text-${menuTextColor}`,
         items.map(({ key, text }) =>
           m(
-            'li.menu-item',
+            'li.menu-item.text-left',
             m(
-              'button.btn.btn-link',
+              'a.btn.btn-link.text-left',
               { onClick: (e: Event) => handleSelect(e, key) },
               text
             )
