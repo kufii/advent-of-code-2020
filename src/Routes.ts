@@ -3,6 +3,7 @@ import { CmpChild } from '/types'
 import { Header } from '/components'
 import { ViewDay } from '/pages'
 import { href, m } from '/vdom'
+import { createHashHistory } from 'history'
 
 const RouteComponent = ({
   day,
@@ -17,14 +18,14 @@ const RouteComponent = ({
   ])
 
 export const Routes = () =>
-  m(Router, [
+  m(
+    Router,
+    {
+      history: createHashHistory()
+    },
     m(Route, {
-      default: true,
-      component: () => m(RouteComponent, { day: '1' }, m(ViewDay, { day: 1 }))
-    }),
-    m(Route, {
-      path: href('/:day'),
+      path: '/:day?',
       component: ({ day }: { day: string }) =>
-        m(RouteComponent, { day }, m(ViewDay, { day: Number(day) }))
+        m(RouteComponent, { day }, m(ViewDay, { day: Number(day || 1) }))
     })
-  ])
+  )
