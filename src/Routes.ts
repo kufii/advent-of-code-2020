@@ -2,7 +2,7 @@ import Router, { Route } from 'preact-router'
 import { CmpChild } from '/types'
 import { Header } from '/components'
 import { ViewDay } from '/pages'
-import { href, m } from '/vdom'
+import { m } from '/vdom'
 import { createHashHistory } from 'history'
 
 const RouteComponent = ({

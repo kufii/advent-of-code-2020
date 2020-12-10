@@ -1,4 +1,4 @@
-import { m, z, href, newTab } from '/vdom'
+import { m, z, newTab } from '/vdom'
 import { Dropdown } from '/components'
 import { setPart } from '/store'
 import { range } from '/utilities'
@@ -17,14 +17,14 @@ export const Header = ({ day }: Props) =>
       m('section.navbar-section', [
         m(
           'a.navbar-brand.text-bold.mx-2.text-light' + z`white-space nowrap`,
-          { href: href('/') },
+          { href: '/' },
           'Advent of Code 2020'
         ),
         m(Dropdown, {
           selected: day,
           onSelect: (day) => {
             setPart(null)
-            route(href('/' + day))
+            route('/' + day)
           },
           items: range(1, 25).map((n) => ({
             key: n.toString(),
