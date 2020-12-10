@@ -14,7 +14,7 @@ export const Header = () => {
     [
       m('section.navbar-section', [
         m(
-          'a.navbar-brand.text-bold.mx-2.text-light',
+          'a.navbar-brand.text-bold.mx-2.text-light' + z`white-space nowrap`,
           { href: href('/') },
           'Advent of Code 2020'
         ),
