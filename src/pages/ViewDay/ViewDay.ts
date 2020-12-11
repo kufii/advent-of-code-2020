@@ -17,7 +17,7 @@ export const ViewDay = ({ day }: Props) => {
   const solution = days[day - 1] as SolutionType | undefined
   return m(
     'div.columns',
-    m('div.column.col-8.col-md-12.col-mx-auto', [
+    m('div.column.col-8.col-lg-12.col-mx-auto', [
       m(
         'h1',
         `Day ${day} Solutions `,
