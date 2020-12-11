@@ -40,7 +40,7 @@ export const Part2 = () => {
   const result = Math.min(...set) + Math.max(...set)
   return m(
     'div',
-    `The set [${set.join(', ')}] sums ${broken}. The result is `,
+    `The set [${set.join(', ')}] sums ${broken}. The encryption weakness is `,
     m('strong', result),
     `.`
   )
