@@ -103,7 +103,7 @@ const Solution = ({
         clearInterval(interval)
       }
       if (value) setSeats(value)
-    }, 40)
+    }, 50)
 
     return () => clearInterval(interval)
   }, [running])
