@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
 import input from './input'
 import { nestedLoop, output2dArray, parse2dArray } from '/utilities'
-import { m } from '/vdom'
+import { m, z } from '/vdom'
 
 interface Coord {
   x: number
@@ -121,7 +121,7 @@ const Solution = ({
       { onClick: () => setRunning(!running) },
       running ? 'Cancel' : 'Run Again'
     ),
-    seats && m('pre', output2dArray(seats))
+    seats && m('pre' + z`overflow-x scroll`, output2dArray(seats))
   ])
 }
 
