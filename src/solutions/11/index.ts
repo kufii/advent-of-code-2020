@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import input from './input'
-import { output2dArray, parse2dArray } from '/utilities'
+import { nestedLoop, output2dArray, parse2dArray } from '/utilities'
 import { m } from '/vdom'
 
 interface Coord {
@@ -8,53 +8,78 @@ interface Coord {
   y: number
 }
 
-const getAdjacentCoords = function* (pos: Coord, min: Coord, max: Coord) {
-  for (
-    let x = Math.max(pos.x - 1, min.x);
-    x <= Math.min(pos.x + 1, max.x);
-    x++
-  ) {
-    for (
-      let y = Math.max(pos.y - 1, min.y);
-      y <= Math.min(pos.y + 1, max.y);
-      y++
-    ) {
-      if (!(x === pos.x && y === pos.y)) yield { x, y }
+type CoordFn = (seats: string[][], pos: Coord) => IterableIterator<Coord>
+
+const getAdjacentCoords = function* (seats: string[][], pos: Coord) {
+  for (const [dx, dy] of nestedLoop(2, -1, 1)) {
+    if (dx === 0 && dy === 0) continue
+    const x = pos.x + dx
+    const y = pos.y + dy
+    if (!(x < 0 || y < 0 || x >= seats[0].length || y >= seats.length))
+      yield { x, y }
+  }
+}
+
+const getVisibleCoords = function* (
+  seats: string[][],
+  pos: Coord
+): Generator<Coord, any, any> {
+  for (const [dx, dy] of nestedLoop(2, -1, 1)) {
+    if (dx === 0 && dy === 0) continue
+    let { x, y } = pos
+    x += dx
+    y += dy
+    while (y >= 0 && y < seats.length && x >= 0 && x < seats[0].length) {
+      if (seats[y][x] !== '.') {
+        yield { x, y }
+        break
+      }
+      x += dx
+      y += dy
     }
   }
 }
 
-const tick = (seats: string[][]) =>
+const tick = (
+  seats: string[][],
+  coordFn: CoordFn,
+  numOccupiedSeatsToEmpty: number
+) =>
   seats.map((row, y) =>
     row.map((seat, x) => {
-      const adjacent = [
-        ...getAdjacentCoords(
-          { x, y },
-          { x: 0, y: 0 },
-          { x: seats[0].length - 1, y: seats.length - 1 }
-        )
-      ]
+      const adjacent = [...coordFn(seats, { x, y })]
       if (seat === 'L' && adjacent.every(({ x, y }) => seats[y][x] !== '#'))
         return '#'
       if (
         seat === '#' &&
-        adjacent.filter(({ x, y }) => seats[y][x] === '#').length >= 4
+        adjacent.filter(({ x, y }) => seats[y][x] === '#').length >=
+          numOccupiedSeatsToEmpty
       )
         return 'L'
       return seat
     })
   )
 
-const tickUntilUnchanged = function* (prev: string[][]) {
+const tickUntilUnchanged = function* (
+  prev: string[][],
+  coordFn: CoordFn,
+  numOccupiedSeatsToEmpty: number
+) {
   while (true) {
     yield prev
-    const current = tick(prev)
+    const current = tick(prev, coordFn, numOccupiedSeatsToEmpty)
     if (output2dArray(current) === output2dArray(prev)) return
     prev = current
   }
 }
 
-export const Part1 = () => {
+const Solution = ({
+  coordFn,
+  numOccupiedSeatsToEmpty
+}: {
+  coordFn: CoordFn
+  numOccupiedSeatsToEmpty: number
+}) => {
   const [seats, setSeats] = useState<string[][] | null>(null)
   const [running, setRunning] = useState(true)
   const [done, setDone] = useState(false)
@@ -63,7 +88,11 @@ export const Part1 = () => {
     if (!running) return
 
     setDone(false)
-    const gen = tickUntilUnchanged(parse2dArray(input))
+    const gen = tickUntilUnchanged(
+      parse2dArray(input),
+      coordFn,
+      numOccupiedSeatsToEmpty
+    )
 
     const interval = setInterval(() => {
       if (!running) clearInterval(interval)
@@ -95,3 +124,9 @@ export const Part1 = () => {
     seats && m('pre', output2dArray(seats))
   ])
 }
+
+export const Part1 = () =>
+  m(Solution, { coordFn: getAdjacentCoords, numOccupiedSeatsToEmpty: 4 })
+
+export const Part2 = () =>
+  m(Solution, { coordFn: getVisibleCoords, numOccupiedSeatsToEmpty: 5 })
