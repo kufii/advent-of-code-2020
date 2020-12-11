@@ -1,3 +1,10 @@
+export const nonNullable = <T>(value: T): value is NonNullable<T> =>
+  value !== null && value !== undefined
+
+type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T
+
+export const truthy = <T>(value: T): value is Truthy<T> => Boolean(value)
+
 export const range = (start: number, end: number) => {
   const arr = []
   for (let n = start; n <= end; n++) {
@@ -30,6 +37,9 @@ export const nestedLoop = function* (
 
 export const parse2dArray = (str: string) =>
   str.split('\n').map((line) => [...line])
+
+export const output2dArray = (arr: string[][]) =>
+  arr.map((line) => line.join('')).join('\n')
 
 export const maxBy = <T>(cb: (item: T) => number) => (a: T, b: T) =>
   cb(b) > cb(a) ? b : a

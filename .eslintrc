@@ -17,6 +17,7 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "semi": "off",
-    "no-console": "warn"
+    "no-console": "warn",
+    "no-constant-condition": "off"
   }
 }
