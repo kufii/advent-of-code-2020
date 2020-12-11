@@ -13,7 +13,7 @@ interface Props {
 
 export const Solution = ({ part, solution }: Props) => {
   const solutionPart = part === 1 ? solution.Part1! : solution.Part2!
-  return m('div.card.mt-2', [
+  return m('div.card.my-2', [
     m('div.card-header', m('div.card-title.h5', `Part ${part}`)),
     m('div.card-body', m(solutionPart))
   ])
