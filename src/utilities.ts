@@ -5,6 +5,11 @@ type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T
 
 export const truthy = <T>(value: T): value is Truthy<T> => Boolean(value)
 
+export interface Point {
+  x: number
+  y: number
+}
+
 export const range = (start: number, end: number) => {
   const arr = []
   for (let n = start; n <= end; n++) {
@@ -48,3 +53,25 @@ export const minBy = <T>(cb: (item: T) => number) => (a: T, b: T) =>
   cb(b) < cb(a) ? b : a
 
 export const sortNum = (a: number, b: number) => a - b
+
+export const mod = (n: number, mod: number) => ((n % mod) + mod) % mod
+
+export const degToRad = (degrees: number) => (Math.PI / 180) * degrees
+
+export const rotate = (
+  { x, y }: Point,
+  degrees: number,
+  origin: Point = { x: 0, y: 0 }
+) => {
+  const radians = degToRad(degrees)
+  const cos = Math.cos(radians)
+  const sin = Math.sin(radians)
+  const { x: cx, y: cy } = origin
+  return {
+    x: cos * (x - cx) + sin * (y - cy) + cx,
+    y: cos * (y - cy) - sin * (x - cx) + cy
+  }
+}
+
+export const manhattanDistance = (a: Point, b: Point = { x: 0, y: 0 }) =>
+  Math.abs(b.x - a.x) + Math.abs(b.y - a.y)
