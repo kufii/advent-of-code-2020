@@ -21,6 +21,11 @@ declare module 'microh' {
     ): ReturnType<H>
     <P>(
       tag: import('preact').ComponentType<P>,
+      props: Omit<P, 'children'>,
+      ...children: Child<H>[]
+    ): ReturnType<H>
+    <P>(
+      tag: import('preact').ComponentType<P>,
       props: P,
       ...children: Child<H>[]
     ): ReturnType<H>
