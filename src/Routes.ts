@@ -27,9 +27,7 @@ export const Routes = () => {
   }, [])
   return m(
     Router,
-    {
-      history
-    },
+    { history },
     m(Route, {
       path: '/:day?',
       component: ({ day }: { day: string }) =>
