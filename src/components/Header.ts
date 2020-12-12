@@ -1,6 +1,5 @@
 import { m, z, newTab } from '/vdom'
 import { Dropdown } from '/components'
-import { setPart, setShowCode } from '/store'
 import { range } from '/utilities'
 import { githubIcon } from './images'
 import { route } from 'preact-router'
@@ -27,11 +26,7 @@ export const Header = ({ day }: Props) =>
         ),
         m(Dropdown, {
           selected: day,
-          onSelect: (day) => {
-            setPart(null)
-            setShowCode(false)
-            route('/' + day)
-          },
+          onSelect: (day) => route('/' + day),
           items: range(1, 25).map((n) => ({
             key: n.toString(),
             text: `Day ${n}`

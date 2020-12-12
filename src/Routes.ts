@@ -4,6 +4,8 @@ import { Header } from '/components'
 import { ViewDay } from '/pages'
 import { m } from '/vdom'
 import { createHashHistory } from 'history'
+import { useEffect } from 'preact/hooks'
+import { resetStore } from './store'
 
 const RouteComponent = ({
   day,
@@ -17,11 +19,16 @@ const RouteComponent = ({
     m('div.container.mt-2', m('div.container', children))
   ])
 
-export const Routes = () =>
-  m(
+export const Routes = () => {
+  const history = createHashHistory()
+  useEffect(() => {
+    const unlisten = history.listen(() => resetStore())
+    return () => unlisten()
+  }, [])
+  return m(
     Router,
     {
-      history: createHashHistory()
+      history
     },
     m(Route, {
       path: '/:day?',
@@ -29,3 +36,4 @@ export const Routes = () =>
         m(RouteComponent, { day }, m(ViewDay, { day: Number(day || 1) }))
     })
   )
+}
