@@ -7,7 +7,7 @@ interface Instruction {
   n: number
 }
 
-const parseInput = (): Instruction[] =>
+const parseInput = () =>
   input
     .split('\n')
     .map((line) => line.match(/(?<command>[A-Z])(?<n>\d+)/u)!.groups!)
@@ -61,7 +61,7 @@ const directShipWithWaypoint = (instructions: Instruction[]) => {
     }
   }
 
-  return Math.abs(ship.x) + Math.abs(ship.y)
+  return manhattanDistance(ship)
 }
 
 export const Part1 = () =>
