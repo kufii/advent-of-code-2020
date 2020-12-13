@@ -1,5 +1,5 @@
 export const nonNullable = <T>(value: T): value is NonNullable<T> =>
-  value !== null && value !== undefined
+  value != null
 
 type Truthy<T> = T extends false | '' | 0 | null | undefined ? never : T
 
@@ -75,3 +75,7 @@ export const rotate = (
 
 export const manhattanDistance = (a: Point, b: Point = { x: 0, y: 0 }) =>
   Math.abs(b.x - a.x) + Math.abs(b.y - a.y)
+
+export const gcd = (a: number, b: number): number => (a ? gcd(b % a, a) : b)
+
+export const lcm = (a: number, b: number) => (a * b) / gcd(a, b)
