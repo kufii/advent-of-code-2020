@@ -25,42 +25,39 @@ export const Dropdown = ({
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
+    if (!open) return
     const handleOutsideClick = () => setOpen(false)
-    document.body.addEventListener('click', handleOutsideClick)
-    return () => document.body.removeEventListener('click', handleOutsideClick)
-  })
+    document.addEventListener('click', handleOutsideClick)
+    return () => document.removeEventListener('click', handleOutsideClick)
+  }, [open])
 
   const handleSelect = (e: Event, key: string) => {
     e.stopPropagation()
-    onSelect(key)
     setOpen(false)
+    onSelect(key)
   }
 
   return m(
     'div.dropdown' + z.concat(open && 'active'),
     { tabindex: 0, 'data-toggle': 'dropdown', role: 'button' },
-    [
-      m(
-        `button.btn.btn-link.dropdown-toggle.text-${textColor}`,
-        { onClick: () => setOpen(true) },
-        [
-          items.find(({ key }) => key === selected)?.text,
-          m(Icon, { name: 'caret' })
-        ]
-      ),
-      m(
-        `ul.menu.text-${menuTextColor}`,
-        items.map(({ key, text }) =>
+    m(
+      `button.btn.btn-link.dropdown-toggle.text-${textColor}`,
+      { onClick: () => setOpen(true) },
+      items.find(({ key }) => key === selected)?.text,
+      m(Icon, { name: 'caret' })
+    ),
+    m(
+      `ul.menu.text-${menuTextColor}`,
+      items.map(({ key, text }) =>
+        m(
+          'li.menu-item.text-left',
           m(
-            'li.menu-item.text-left',
-            m(
-              'a.btn.btn-link.text-left',
-              { onClick: (e: Event) => handleSelect(e, key) },
-              text
-            )
+            'a.btn.btn-link.text-left',
+            { onClick: (e: Event) => handleSelect(e, key) },
+            text
           )
         )
       )
-    ]
+    )
   )
 }
