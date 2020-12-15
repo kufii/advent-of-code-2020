@@ -13,8 +13,8 @@ const run = function* (numbers: number[], times: number, yieldEvery?: number) {
     const last = audit.get(prev)
     const current = last == null ? 0 : i - 1 - last
     audit.set(prev, i - 1)
-    if (yieldEvery && i % yieldEvery === 0) yield prev
     prev = current
+    if (yieldEvery && i % yieldEvery === 0) yield
   }
   yield prev
 }
