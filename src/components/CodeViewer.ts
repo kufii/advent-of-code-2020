@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'preact/hooks'
-import { m } from '/vdom'
+import { m, z } from '/vdom'
 import { highlight, languages } from 'prismjs'
 import 'prismjs/components/prism-typescript'
 
@@ -38,10 +38,14 @@ export const CodeViewer = ({ day }: Props) => {
     : m(
         'pre.code',
         { 'data-lang': 'TypeScript' },
-        m('code', {
-          dangerouslySetInnerHTML: {
-            __html: highlight(code, languages.typescript, 'typescript')
+        m(
+          'code' +
+            z`ff 'Operator Mono Ssm Lig', 'Operator Mono Lig', 'Operator Mono Ssm', 'Operator Mono', 'SF Mono', monospace`,
+          {
+            dangerouslySetInnerHTML: {
+              __html: highlight(code, languages.typescript, 'typescript')
+            }
           }
-        })
+        )
       )
 }
