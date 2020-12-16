@@ -20,6 +20,8 @@ export const range = (start: number, end: number) => {
 
 export const sum = (a: number, b: number) => a + b
 
+export const product = (a: number, b: number) => a * b
+
 export const nestedLoop = function* (
   n: number,
   start: number,
