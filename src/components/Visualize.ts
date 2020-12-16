@@ -10,7 +10,7 @@ export const Visualize = ({ children }: Props) =>
     'pre' +
       z`
         overflow-x scroll
-        ff 'Source Code Pro', monospace
+        ff source-code-pro, monospace
         line-height 100%
       `,
     children
