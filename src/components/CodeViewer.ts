@@ -40,7 +40,7 @@ export const CodeViewer = ({ day }: Props) => {
         { 'data-lang': 'TypeScript' },
         m(
           'code' +
-            z`ff 'Operator Mono Ssm Lig', 'Operator Mono Lig', 'Operator Mono Ssm', 'Operator Mono', 'SF Mono', monospace`,
+            z`ff 'Operator Mono Ssm Lig', 'Operator Mono Lig', 'Operator Mono Ssm', 'Operator Mono', 'SF Mono', Menlo, 'Source Code Pro', monospace`,
           {
             dangerouslySetInnerHTML: {
               __html: highlight(code, languages.typescript, 'typescript')

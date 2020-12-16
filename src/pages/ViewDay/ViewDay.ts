@@ -1,9 +1,7 @@
-import { Icon } from '/components'
-import { Solution } from '/components/Solution'
+import { Icon, Solution, CodeViewer } from '/components'
 import { setPart, setShowCode, useStore } from '/store'
 import { m, newTab } from '/vdom'
 import days, { Solution as SolutionType } from '/solutions'
-import { CodeViewer } from '/components/CodeViewer'
 
 interface Props {
   day: number
