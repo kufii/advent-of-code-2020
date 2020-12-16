@@ -12,6 +12,8 @@ export const Visualize = ({ children }: Props) =>
         overflow-x scroll
         ff source-code-pro, monospace
         line-height 100%
+        padding-bottom 10px
+        margin-bottom -10px
       `,
     children
   )
