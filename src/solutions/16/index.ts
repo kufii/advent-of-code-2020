@@ -18,7 +18,6 @@ const parseInput = () => {
   const [fields, myTicket, tickets] = input.split('\n\n')
   return {
     fields: fields
-      .trim()
       .split('\n')
       .map(
         (line) =>
