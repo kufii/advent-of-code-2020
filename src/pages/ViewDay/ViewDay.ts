@@ -1,5 +1,5 @@
 import { Icon, Solution, CodeViewer } from '/components'
-import { setPart, setShowCode, useStore } from '/store'
+import { setPart, useStore } from '/store'
 import { m, newTab } from '/vdom'
 import days, { Solution as SolutionType } from '/solutions'
 
@@ -8,9 +8,8 @@ interface Props {
 }
 
 export const ViewDay = ({ day }: Props) => {
-  const { part, showCode } = useStore(({ part, showCode }) => ({
-    part,
-    showCode
+  const { part } = useStore(({ part }) => ({
+    part
   }))
   const solution = days[day - 1] as SolutionType | undefined
   return m(
@@ -30,15 +29,9 @@ export const ViewDay = ({ day }: Props) => {
           m('button.btn.mr-1', { onClick: () => setPart(1) }, 'Part 1'),
         solution?.Part2 &&
           m('button.btn.mr-1', { onClick: () => setPart(2) }, 'Part 2'),
-        solution &&
-          m(
-            'button.btn.btn-link',
-            { onClick: () => setShowCode(!showCode) },
-            showCode ? 'Hide Code' : 'Show Code'
-          )
+        solution && m(CodeViewer, { day })
       ]),
       !solution && m('p', `Day ${day} not yet implemented.`),
-      showCode && m(CodeViewer, { day }),
       solution && part && m(Solution, { solution, part })
     ])
   )
