@@ -84,3 +84,7 @@ export const lcm = (a: number, b: number) => (a * b) / gcd(a, b)
 
 export const replaceAt = (str: string, index: number, replace: string) =>
   str.slice(0, index) + replace + str.slice(index + 1)
+
+export const nTimes = (n: number, cb: () => unknown) => {
+  for (let i = 0; i < n; i++) cb()
+}
