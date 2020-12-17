@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'preact/hooks'
 import input from './input'
 import { nestedLoop, nTimes, parse2dArray } from '/utilities'
 import { m } from '/vdom'
@@ -124,12 +125,23 @@ export const Part1 = () => {
 }
 
 export const Part2 = () => {
-  let map = parseInput()
-  nTimes(6, () => (map = tickW(map)))
+  const [result, setResult] = useState<number | null>(null)
+
+  useEffect(() => {
+    let map = parseInput()
+    nTimes(6, () => (map = tickW(map)))
+    setResult(getNumActive(map))
+  }, [])
+
   return m(
     'div',
-    'After 6 cycles, there are ',
-    m('strong', getNumActive(map)),
-    ' active cubes in the 4-dimensional space.'
+    result
+      ? m(
+          'span',
+          'After 6 cycles, there are ',
+          m('strong', result),
+          ' active cubes in the 4-dimensional space.'
+        )
+      : 'Running...'
   )
 }
