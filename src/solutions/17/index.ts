@@ -23,7 +23,7 @@ export const parseInput = () => {
   const map = new Map<string, string>()
   const array = parse2dArray(input)
   for (let y = 0; y < array.length; y++) {
-    for (let x = 0; x < array.length; x++) {
+    for (let x = 0; x < array[y].length; x++) {
       map.set(key({ x, y, z: 0, w: 0 }), array[y][x])
     }
   }
