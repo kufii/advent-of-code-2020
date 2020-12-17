@@ -30,8 +30,6 @@ export const parseInput = () => {
   return map
 }
 
-const getValue = (map: Space, coord: Coord) => map.get(key(coord)) || '.'
-
 const getNeighbors = function* ({ x, y, z, w }: Coord, numAxis = 3) {
   for (const [dx, dy, dz, dw = 0] of nestedLoop(numAxis, -1, 1)) {
     if (!(dx === 0 && dy === 0 && dz === 0 && dw === 0))
@@ -39,18 +37,15 @@ const getNeighbors = function* ({ x, y, z, w }: Coord, numAxis = 3) {
   }
 }
 
-const getBounds = (map: Space) => {
+const getBounds = (
+  map: Space
+): Record<string, { min: number; max: number }> => {
   const coords = [...map.keys()].map(unKey)
   const attrs: ('x' | 'y' | 'z' | 'w')[] = ['x', 'y', 'z', 'w']
-  const [minX, maxX, minY, maxY, minZ, maxZ, minW, maxW] = attrs
-    .map((prop) => coords.map((c) => c[prop]))
-    .flatMap((arr) => [fastMin(arr), fastMax(arr)])
-  return {
-    x: { min: minX, max: maxX },
-    y: { min: minY, max: maxY },
-    z: { min: minZ, max: maxZ },
-    w: { min: minW, max: maxW }
-  }
+  return attrs.reduce((acc, key) => {
+    const arr = coords.map((c) => c[key])
+    return { ...acc, [key]: { min: fastMin(arr), max: fastMax(arr) } }
+  }, {})
 }
 
 const updateCoord = (
@@ -62,9 +57,10 @@ const updateCoord = (
   const numActiveNeighbors = [...getNeighbors(coord, numAxis)].filter(
     (coord) => oldMap.get(key(coord)) === '#'
   ).length
+  const cKey = key(coord)
   newMap.set(
-    key(coord),
-    getValue(oldMap, coord) === '#'
+    cKey,
+    oldMap.get(cKey) === '#'
       ? [2, 3].includes(numActiveNeighbors)
         ? '#'
         : '.'
