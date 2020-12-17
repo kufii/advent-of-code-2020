@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import input from './input'
-import { fastMax, fastMin, nestedLoop, nTimes, parse2dArray } from '/utilities'
+import { fastMax, fastMin, nestedLoop, parse2dArray } from '/utilities'
 import { m } from '/vdom'
 
 interface Coord {
@@ -22,10 +22,11 @@ const unKey = (key: string) => {
 export const parseInput = () => {
   const map = new Map<string, string>()
   const array = parse2dArray(input)
-  for (let y = 0; y < array.length; y++) {
-    for (let x = 0; x < array[y].length; x++) {
-      map.set(key({ x, y, z: 0, w: 0 }), array[y][x])
-    }
+  for (const [y, x] of nestedLoop(2, 0, [
+    array.length - 1,
+    array[0].length - 1
+  ])) {
+    map.set(key({ x, y, z: 0, w: 0 }), array[y][x])
   }
   return map
 }
@@ -70,31 +71,16 @@ const updateCoord = (
   )
 }
 
-const tick = (map: Space) => {
+const tick = function* (map: Space, numAxis = 3) {
   const newMap = new Map<string, string>()
   const bounds = getBounds(map)
-  for (let x = bounds.x.min - 1; x <= bounds.x.max + 1; x++) {
-    for (let y = bounds.y.min - 1; y <= bounds.y.max + 1; y++) {
-      for (let z = bounds.z.min - 1; z <= bounds.z.max + 1; z++) {
-        updateCoord(map, newMap, { x, y, z, w: 0 })
-      }
-    }
-  }
-  return newMap
-}
-
-const tickW = function* (map: Space) {
-  const newMap = new Map<string, string>()
-  const bounds = getBounds(map)
-  for (let x = bounds.x.min - 1; x <= bounds.x.max + 1; x++) {
-    for (let y = bounds.y.min - 1; y <= bounds.y.max + 1; y++) {
-      for (let z = bounds.z.min - 1; z <= bounds.z.max + 1; z++) {
-        for (let w = bounds.w.min - 1; w <= bounds.w.max + 1; w++) {
-          updateCoord(map, newMap, { x, y, z, w }, 4)
-          yield
-        }
-      }
-    }
+  for (const [x, y, z, w = 0] of nestedLoop(
+    numAxis,
+    [bounds.x.min - 1, bounds.y.min - 1, bounds.z.min - 1, bounds.w.min - 1],
+    [bounds.x.max + 1, bounds.y.max + 1, bounds.z.max + 1, bounds.w.max + 1]
+  )) {
+    updateCoord(map, newMap, { x, y, z, w }, numAxis)
+    yield
   }
   yield newMap
 }
@@ -102,34 +88,31 @@ const tickW = function* (map: Space) {
 const getNumActive = (map: Space) =>
   [...map.values()].filter((c) => c === '#').length
 
-const runW = function* (map: Space) {
+const run = function* (map: Space, numAxis = 3, yieldEvery = 0) {
   let n = 0
   for (let i = 0; i < 6; i++) {
-    for (const newMap of tickW(map)) {
+    for (const newMap of tick(map, numAxis)) {
       if (newMap) map = newMap
-      if (n++ % 10000 === 0) yield
+      if (yieldEvery && n++ % yieldEvery === 0) yield
     }
   }
   yield getNumActive(map)
 }
 
-export const Part1 = () => {
-  let map = parseInput()
-  nTimes(6, () => (map = tick(map)))
-  return m(
+export const Part1 = () =>
+  m(
     'div',
     'After 6 cycles, there are ',
-    m('strong', getNumActive(map)),
+    m('strong', [...run(parseInput())][0]),
     ' active cubes in the 3-dimensional space.'
   )
-}
 
 export const Part2 = () => {
   const [result, setResult] = useState<number | null>(null)
 
   useEffect(() => {
     const map = parseInput()
-    const gen = runW(map)
+    const gen = run(map, 4, 10000)
     const interval = setInterval(() => {
       const { value, done } = gen.next()
       if (done) clearInterval(interval)

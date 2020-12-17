@@ -24,20 +24,24 @@ export const product = (a: number, b: number) => a * b
 
 export const nestedLoop = function* (
   n: number,
-  start: number,
-  end: number
+  start: number | number[],
+  end: number | number[]
 ): IterableIterator<number[]> {
-  const arr = Array(n).fill(start)
+  const get = (value: number | number[], index: number) =>
+    Array.isArray(value) ? value[index] : value
+  const arr = Array(n)
+    .fill(null)
+    .map((_, i) => get(start, i))
   let i = 0
   while (true) {
     yield arr.slice()
     arr[0]++
-    while (arr[i] === end + 1) {
-      arr[i] = start
+    while (arr[i] === get(end, i) + 1) {
+      arr[i] = get(start, i)
       i++
       if (i === n) return
       arr[i]++
-      if (arr[i] !== end + 1) i = 0
+      if (arr[i] !== get(end, i) + 1) i = 0
     }
   }
 }
