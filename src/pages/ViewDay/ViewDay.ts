@@ -8,9 +8,7 @@ interface Props {
 }
 
 export const ViewDay = ({ day }: Props) => {
-  const { part } = useStore(({ part }) => ({
-    part
-  }))
+  const part = useStore((s) => s.part)
   const solution = days[day - 1] as SolutionType | undefined
   return m(
     'div.columns',

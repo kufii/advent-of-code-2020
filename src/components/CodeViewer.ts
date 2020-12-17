@@ -3,20 +3,16 @@ import { Fragment } from 'preact'
 import { m, z } from '/vdom'
 import { highlight, languages } from 'prismjs'
 import 'prismjs/components/prism-typescript'
+import { setCode, setShowCode, useStore } from '/store'
 
 interface Props {
   day: number
 }
 
 export const CodeViewer = ({ day }: Props) => {
-  const [showCode, setShowCode] = useState(false)
-  const [code, setCode] = useState('')
+  const showCode = useStore((s) => s.showCode)
+  const code = useStore((s) => s.code)
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    setShowCode(false)
-    setCode('')
-  }, [day])
 
   useEffect(() => {
     if (!showCode || code) return
