@@ -42,12 +42,9 @@ const getNeighbors = function* ({ x, y, z, w }: Coord, numAxis = 3) {
 const getBounds = (map: Space) => {
   const coords = [...map.keys()].map(unKey)
   const attrs: ('x' | 'y' | 'z' | 'w')[] = ['x', 'y', 'z', 'w']
-  const [minX, minY, minZ, minW] = attrs.map((prop) =>
-    fastMin(coords.map((c) => c[prop]))
-  )
-  const [maxX, maxY, maxZ, maxW] = attrs.map((prop) =>
-    fastMax(coords.map((c) => c[prop]))
-  )
+  const [minX, maxX, minY, maxY, minZ, maxZ, minW, maxW] = attrs
+    .map((prop) => coords.map((c) => c[prop]))
+    .flatMap((coords) => [fastMin(coords), fastMax(coords)])
   return {
     x: { min: minX, max: maxX },
     y: { min: minY, max: maxY },
