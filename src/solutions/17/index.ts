@@ -44,7 +44,7 @@ const getBounds = (map: Space) => {
   const attrs: ('x' | 'y' | 'z' | 'w')[] = ['x', 'y', 'z', 'w']
   const [minX, maxX, minY, maxY, minZ, maxZ, minW, maxW] = attrs
     .map((prop) => coords.map((c) => c[prop]))
-    .flatMap((coords) => [fastMin(coords), fastMax(coords)])
+    .flatMap((arr) => [fastMin(arr), fastMax(arr)])
   return {
     x: { min: minX, max: maxX },
     y: { min: minY, max: maxY },
