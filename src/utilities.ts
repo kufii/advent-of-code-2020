@@ -88,3 +88,9 @@ export const replaceAt = (str: string, index: number, replace: string) =>
 export const nTimes = (n: number, cb: () => unknown) => {
   for (let i = 0; i < n; i++) cb()
 }
+
+export const fastMax = (arr: number[]) =>
+  arr.reduce((max, v) => (max >= v ? max : v), -Infinity)
+
+export const fastMin = (arr: number[]) =>
+  arr.reduce((min, v) => (min <= v ? min : v), Infinity)

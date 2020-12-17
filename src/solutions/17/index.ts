@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import input from './input'
-import { nestedLoop, nTimes, parse2dArray } from '/utilities'
+import { fastMax, fastMin, nestedLoop, nTimes, parse2dArray } from '/utilities'
 import { m } from '/vdom'
 
 interface Coord {
@@ -43,10 +43,10 @@ const getBounds = (map: Space) => {
   const coords = [...map.keys()].map(unKey)
   const attrs: ('x' | 'y' | 'z' | 'w')[] = ['x', 'y', 'z', 'w']
   const [minX, minY, minZ, minW] = attrs.map((prop) =>
-    Math.min(...coords.map((c) => c[prop]))
+    fastMin(coords.map((c) => c[prop]))
   )
   const [maxX, maxY, maxZ, maxW] = attrs.map((prop) =>
-    Math.max(...coords.map((c) => c[prop]))
+    fastMax(coords.map((c) => c[prop]))
   )
   return {
     x: { min: minX, max: maxX },
@@ -90,7 +90,7 @@ const tick = (map: Space) => {
   return newMap
 }
 
-const tickW = (map: Space) => {
+const tickW = function* (map: Space) {
   const newMap = new Map<string, string>()
   const bounds = getBounds(map)
   for (let x = bounds.x.min - 1; x <= bounds.x.max + 1; x++) {
@@ -98,15 +98,27 @@ const tickW = (map: Space) => {
       for (let z = bounds.z.min - 1; z <= bounds.z.max + 1; z++) {
         for (let w = bounds.w.min - 1; w <= bounds.w.max + 1; w++) {
           updateCoord(map, newMap, { x, y, z, w }, 4)
+          yield
         }
       }
     }
   }
-  return newMap
+  yield newMap
 }
 
 const getNumActive = (map: Space) =>
   [...map.values()].filter((c) => c === '#').length
+
+const runW = function* (map: Space) {
+  let n = 0
+  for (let i = 0; i < 6; i++) {
+    for (const newMap of tickW(map)) {
+      if (newMap) map = newMap
+      if (n++ % 10000 === 0) yield
+    }
+  }
+  yield getNumActive(map)
+}
 
 export const Part1 = () => {
   let map = parseInput()
@@ -123,9 +135,14 @@ export const Part2 = () => {
   const [result, setResult] = useState<number | null>(null)
 
   useEffect(() => {
-    let map = parseInput()
-    nTimes(6, () => (map = tickW(map)))
-    setResult(getNumActive(map))
+    const map = parseInput()
+    const gen = runW(map)
+    const interval = setInterval(() => {
+      const { value, done } = gen.next()
+      if (done) clearInterval(interval)
+      if (value) setResult(value)
+    }, 0)
+    return () => clearInterval(interval)
   }, [])
 
   return m(

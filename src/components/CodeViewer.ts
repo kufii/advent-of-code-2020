@@ -13,10 +13,13 @@ export const CodeViewer = ({ day }: Props) => {
   const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => setShowCode(false), [day])
+  useEffect(() => {
+    setShowCode(false)
+    setCode('')
+  }, [day])
 
   useEffect(() => {
-    if (!showCode) return
+    if (!showCode || code) return
     const loadCode = async () => {
       setLoading(true)
       try {
@@ -36,7 +39,7 @@ export const CodeViewer = ({ day }: Props) => {
       }
     }
     loadCode()
-  }, [showCode, day])
+  }, [showCode, code, day])
 
   return m(
     Fragment,
