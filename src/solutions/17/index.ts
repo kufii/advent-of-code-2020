@@ -41,23 +41,18 @@ const getNeighbors = function* ({ x, y, z, w }: Coord, numAxis = 3) {
 
 const getBounds = (map: Space) => {
   const coords = [...map.keys()].map(unKey)
+  const attrs: ('x' | 'y' | 'z' | 'w')[] = ['x', 'y', 'z', 'w']
+  const [minX, minY, minZ, minW] = attrs.map((prop) =>
+    Math.min(...coords.map((c) => c[prop]))
+  )
+  const [maxX, maxY, maxZ, maxW] = attrs.map((prop) =>
+    Math.max(...coords.map((c) => c[prop]))
+  )
   return {
-    x: {
-      min: Math.min(...coords.map(({ x }) => x)),
-      max: Math.max(...coords.map(({ x }) => x))
-    },
-    y: {
-      min: Math.min(...coords.map(({ y }) => y)),
-      max: Math.max(...coords.map(({ y }) => y))
-    },
-    z: {
-      min: Math.min(...coords.map(({ z }) => z)),
-      max: Math.max(...coords.map(({ z }) => z))
-    },
-    w: {
-      min: Math.min(...coords.map(({ w }) => w)),
-      max: Math.max(...coords.map(({ w }) => w))
-    }
+    x: { min: minX, max: maxX },
+    y: { min: minY, max: maxY },
+    z: { min: minZ, max: maxZ },
+    w: { min: minW, max: maxW }
   }
 }
 
