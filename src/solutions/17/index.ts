@@ -42,7 +42,7 @@ const getBounds = (
   map: Space
 ): Record<string, { min: number; max: number }> => {
   const coords = [...map.keys()].map(unKey)
-  const attrs: ('x' | 'y' | 'z' | 'w')[] = ['x', 'y', 'z', 'w']
+  const attrs: ['x', 'y', 'z', 'w'] = ['x', 'y', 'z', 'w']
   return attrs.reduce((acc, key) => {
     const arr = coords.map((c) => c[key])
     return { ...acc, [key]: { min: fastMin(arr), max: fastMax(arr) } }
