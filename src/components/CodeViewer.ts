@@ -10,8 +10,7 @@ interface Props {
 }
 
 export const CodeViewer = ({ day }: Props) => {
-  const showCode = useStore((s) => s.showCode)
-  const code = useStore((s) => s.code)
+  const [showCode, code] = useStore([(s) => s.showCode, (s) => s.code])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
