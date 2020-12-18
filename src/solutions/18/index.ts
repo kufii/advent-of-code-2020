@@ -28,7 +28,7 @@ const orderOfOperations = (str: string) => {
 const run = (str: string, doOrderOfOperations = false) => {
   const replaceFunc = doOrderOfOperations ? orderOfOperations : evaluate
   while (str.includes('(')) {
-    str = str.replace(/\((([^()]|(,))*)\)/gu, (_, group: string) =>
+    str = str.replace(/\(([^()]*)\)/gu, (_, group: string) =>
       replaceFunc(group).toString()
     )
   }
