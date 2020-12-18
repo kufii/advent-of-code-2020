@@ -1,1 +1,1 @@
-export { default as githubIcon } from './GitHub-Mark-Light-120px-plus.png'
+export { default as githubIcon } from './github-mark.svg'
