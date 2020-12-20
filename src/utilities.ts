@@ -98,3 +98,11 @@ export const fastMax = (arr: number[]) =>
 
 export const fastMin = (arr: number[]) =>
   arr.reduce((min, v) => (min <= v ? min : v), Infinity)
+
+export const make2dArray = <T>(ySize: number, xSize: number, fill: T): T[][] =>
+  Array(ySize)
+    .fill(null)
+    .map(() => Array(xSize).fill(fill))
+
+export const clone2dArray = <T>(array: T[][]) =>
+  array.slice().map((line) => line.slice())
