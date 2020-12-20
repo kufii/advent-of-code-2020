@@ -30,21 +30,17 @@ const flip = (tile: Tile) => clone2dArray(tile).reverse()
 const rotate = (tile: Tile) =>
   tile[0].map((_, index) => tile.map((row) => row[index]).reverse())
 
-const getTransformFns = function* () {
-  yield (tile: Tile) => tile
-  yield (tile: Tile) => rotate(tile)
-  yield (tile: Tile) => rotate(tile)
-  yield (tile: Tile) => rotate(tile)
-  yield (tile: Tile) => flip(tile)
-  yield (tile: Tile) => rotate(tile)
-  yield (tile: Tile) => rotate(tile)
-  yield (tile: Tile) => rotate(tile)
-}
-
 const getTransforms = function* (tile: Tile) {
-  for (const fn of getTransformFns()) {
-    tile = fn(tile)
-    yield tile
+  yield tile
+  for (let n = 0; n < 2; n++) {
+    for (let r = 0; r < 3; r++) {
+      tile = rotate(tile)
+      yield tile
+    }
+    if (n === 0) {
+      tile = flip(tile)
+      yield tile
+    }
   }
 }
 
@@ -117,23 +113,25 @@ const findSeaMonsters = (tile: Tile) => {
   `.trim()
   )
 
-  for (const fn of getTransformFns()) {
-    tile = fn(tile)
-    for (let y = 0; y < tile.length - monster.length; y++) {
-      for (let x = 0; x < tile[0].length - monster[0].length; x++) {
+  for (const t of getTransforms(tile)) {
+    let found = false
+    for (let y = 0; y < t.length - monster.length; y++) {
+      for (let x = 0; x < t[0].length - monster[0].length; x++) {
         const match = monster.every((line, my) =>
-          line.every((c, mx) => c === '.' || tile[y + my][x + mx] === '#')
+          line.every((c, mx) => c === '.' || t[y + my][x + mx] === '#')
         )
-        if (match)
+        if (match) {
+          found = true
           monster.forEach((line, my) =>
             line.forEach((c, mx) => {
-              if (c === '#') tile[y + my][x + mx] = 'O'
+              if (c === '#') t[y + my][x + mx] = 'O'
             })
           )
+        }
       }
     }
+    if (found) return t
   }
-  return tile
 }
 
 export const StitchedLoader = ({
@@ -193,7 +191,7 @@ export const Part2 = () =>
           )
         )
       )
-      const mapWithMonsters = output2dArray(findSeaMonsters(map))
+      const mapWithMonsters = output2dArray(findSeaMonsters(map)!)
       const result = mapWithMonsters.match(/#/gu)!.length
       return m(
         'div',
