@@ -1,6 +1,7 @@
+import input from './input'
+import dedent from 'dedent'
 import { FunctionComponent } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
-import input from './input'
 import { Visualize } from '/components'
 import {
   clone2dArray,
@@ -12,18 +13,17 @@ import {
 import { m } from '/vdom'
 
 type Tile = string[][]
-type Stitched = ({ key: number; tile: Tile } | null)[][]
+interface TileWithKey {
+  key: number
+  tile: Tile
+}
+type Stitched = (TileWithKey | null)[][]
 
-const parseInput = (): Record<number, Tile> =>
-  input.split('\n\n').reduce(
-    (acc, block) => ({
-      ...acc,
-      [Number(
-        block.split('\n')[0].match(/Tile (?<key>\d+)/u)!.groups!.key
-      )]: parse2dArray(block.split('\n').slice(1).join('\n'))
-    }),
-    {}
-  )
+const parseInput = (): TileWithKey[] =>
+  input.split('\n\n').map((block) => ({
+    key: Number(block.split('\n')[0].match(/Tile (?<key>\d+)/u)!.groups!.key),
+    tile: parse2dArray(block.split('\n').slice(1).join('\n'))
+  }))
 
 const flip = (tile: Tile) => clone2dArray(tile).reverse()
 
@@ -50,47 +50,44 @@ const topMatches = (tile: Tile, matches: Tile) =>
 const leftMatches = (tile: Tile, matches: Tile) =>
   tile.every((line, y) => matches[y][matches[y].length - 1] === line[0])
 
-const stitch = function* (tiles: Record<number, Tile>, yieldEvery = 50) {
-  const tileArray = Object.entries(tiles).map(([key, tile]) => ({
-    key: Number(key),
-    tile
-  }))
-  const size = Math.sqrt(tileArray.length)
+const stitch = function* (tiles: TileWithKey[], yieldEvery = 100) {
+  const size = Math.sqrt(tiles.length)
   const getPos = (index: number) => ({
     x: index % size,
     y: Math.floor(index / size)
   })
 
-  const recurse = function* (
-    array: Stitched,
-    keys: number[] = [],
-    i = 0
-  ): IterableIterator<Stitched | null> {
-    const remainingTiles = tileArray.filter(({ key }) => !keys.includes(key))
-    const { x, y } = getPos(i)
-    const validTiles = remainingTiles.flatMap(({ key, tile }) =>
-      [...getTransforms(tile)]
-        .filter(
-          (tile) =>
-            (x === 0 || leftMatches(tile, array[y][x - 1]!.tile)) &&
-            (y === 0 || topMatches(tile, array[y - 1][x]!.tile))
-        )
-        .map((tile) => ({ key, tile }))
-    )
-    for (const tile of validTiles) {
-      array[y][x] = tile
-      if (i === tileArray.length - 1) yield array
-      yield* recurse(clone2dArray(array), [...keys, tile.key], i + 1)
-    }
-    yield null
-  }
-
   let n = 0
-  for (const result of recurse(
-    make2dArray<{ key: number; tile: Tile } | null>(size, size, null)
+  for (const start of tiles.flatMap(({ key, tile }) =>
+    [...getTransforms(tile)].map((tile) => ({ key, tile }))
   )) {
-    if (result) return yield result
-    if (n++ % yieldEvery === 0) yield null
+    const array = make2dArray<TileWithKey | null>(size, size, null)
+    const keys = new Set([start.key])
+    array[0][0] = start
+    let i = 1
+
+    while (i < tiles.length) {
+      if (n++ % yieldEvery === 0) yield
+      const { x, y } = getPos(i)
+      const remainingTiles = tiles.filter(({ key }) => !keys.has(key))
+      const next = remainingTiles
+        .map(({ key, tile }) =>
+          [...getTransforms(tile)]
+            .map((tile) => ({ key, tile }))
+            .find(
+              ({ tile }) =>
+                (x === 0 || leftMatches(tile, array[y][x - 1]!.tile)) &&
+                (y === 0 || topMatches(tile, array[y - 1][x]!.tile))
+            )
+        )
+        .find(Boolean)
+      if (!next) break
+      array[y][x] = next
+      keys.add(next.key)
+      i++
+    }
+
+    if (i >= tiles.length) return yield array
   }
 }
 
@@ -106,11 +103,11 @@ const merge = (tiles: Tile[][]) => {
 
 const findSeaMonsters = (tile: Tile) => {
   const monster = parse2dArray(
-    `
-..................#.
-#....##....##....###
-.#..#..#..#..#..#...
-  `.trim()
+    dedent`
+      ..................#.
+      #....##....##....###
+      .#..#..#..#..#..#...
+    `.trim()
   )
 
   for (const t of getTransforms(tile)) {
@@ -118,7 +115,7 @@ const findSeaMonsters = (tile: Tile) => {
     for (let y = 0; y < t.length - monster.length; y++) {
       for (let x = 0; x < t[0].length - monster[0].length; x++) {
         const match = monster.every((line, my) =>
-          line.every((c, mx) => c === '.' || t[y + my][x + mx] === '#')
+          line.every((c, mx) => c !== '#' || t[y + my][x + mx] === '#')
         )
         if (match) {
           found = true
@@ -134,7 +131,7 @@ const findSeaMonsters = (tile: Tile) => {
   }
 }
 
-export const StitchedLoader = ({
+const StitchedLoader = ({
   render
 }: {
   render: FunctionComponent<{ stitched: Stitched }>
@@ -155,7 +152,7 @@ export const StitchedLoader = ({
     return () => clearInterval(interval)
   }, [])
 
-  if (!stitched) return m('div', 'Running... This takes a while...')
+  if (!stitched) return m('div', 'Running...')
 
   return m(render, { stitched })
 }
@@ -171,7 +168,7 @@ export const Part1 = () =>
       )
       return m(
         'div',
-        'The product of the keys of the 4 corners is ',
+        'The product of the keys in the 4 corners is ',
         m('strong', result),
         '.',
         m(Visualize, merged)
