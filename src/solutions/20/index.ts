@@ -193,7 +193,10 @@ export const Part2 = () =>
         'div',
         m('strong', result),
         ' #s are not part of a sea monster.',
-        m(Visualize, mapWithMonsters)
+        m(
+          Visualize,
+          [...mapWithMonsters].map((c) => (c === 'O' ? m('strong', c) : c))
+        )
       )
     }
   })
