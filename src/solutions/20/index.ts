@@ -91,15 +91,14 @@ const stitch = function* (tiles: TileWithKey[], yieldEvery = 100) {
   }
 }
 
-const merge = (tiles: Tile[][]) => {
-  let result = ''
-  for (const tileRow of tiles) {
-    for (let i = 0; i < tileRow[0].length; i++) {
-      result += tileRow.map((tile) => tile[i].join('')).join('') + '\n'
-    }
-  }
-  return result.trim()
-}
+const merge = (tiles: Tile[][]) =>
+  tiles
+    .flatMap((tileRow, ty) =>
+      tileRow[0].map((_, y) =>
+        tiles[ty].map((tile) => tile[y].join('')).join('')
+      )
+    )
+    .join('\n')
 
 const findSeaMonsters = (tile: Tile) => {
   const monster = parse2dArray(
