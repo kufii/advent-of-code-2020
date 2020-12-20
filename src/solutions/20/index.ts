@@ -1,16 +1,17 @@
 import input from './input'
 import dedent from 'dedent'
-import { FunctionComponent } from 'preact'
+import { FunctionComponent, VNode } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 import { Visualize } from '/components'
 import {
   clone2dArray,
   make2dArray,
+  nestedLoop,
   output2dArray,
   parse2dArray,
   product
 } from '/utilities'
-import { m } from '/vdom'
+import { m, z } from '/vdom'
 
 type Tile = string[][]
 interface TileWithKey {
@@ -56,11 +57,13 @@ const stitch = function* (tiles: TileWithKey[], yieldEvery = 100) {
     x: index % size,
     y: Math.floor(index / size)
   })
+  const toTransformArray = (tiles: TileWithKey[]) =>
+    tiles.flatMap(({ key, tile }) =>
+      [...getTransforms(tile)].map((tile) => ({ key, tile }))
+    )
 
   let n = 0
-  for (const start of tiles.flatMap(({ key, tile }) =>
-    [...getTransforms(tile)].map((tile) => ({ key, tile }))
-  )) {
+  for (const start of toTransformArray(tiles)) {
     const array = make2dArray<TileWithKey | null>(size, size, null)
     const keys = new Set([start.key])
     array[0][0] = start
@@ -70,17 +73,11 @@ const stitch = function* (tiles: TileWithKey[], yieldEvery = 100) {
       if (n++ % yieldEvery === 0) yield
       const { x, y } = getPos(i)
       const remainingTiles = tiles.filter(({ key }) => !keys.has(key))
-      const next = remainingTiles
-        .map(({ key, tile }) =>
-          [...getTransforms(tile)]
-            .map((tile) => ({ key, tile }))
-            .find(
-              ({ tile }) =>
-                (x === 0 || leftMatches(tile, array[y][x - 1]!.tile)) &&
-                (y === 0 || topMatches(tile, array[y - 1][x]!.tile))
-            )
-        )
-        .find(Boolean)
+      const next = toTransformArray(remainingTiles).find(
+        ({ tile }) =>
+          (x === 0 || leftMatches(tile, array[y][x - 1]!.tile)) &&
+          (y === 0 || topMatches(tile, array[y - 1][x]!.tile))
+      )
       if (!next) break
       array[y][x] = next
       keys.add(next.key)
@@ -111,19 +108,20 @@ const findSeaMonsters = (tile: Tile) => {
 
   for (const t of getTransforms(tile)) {
     let found = false
-    for (let y = 0; y < t.length - monster.length; y++) {
-      for (let x = 0; x < t[0].length - monster[0].length; x++) {
-        const match = monster.every((line, my) =>
-          line.every((c, mx) => c !== '#' || t[y + my][x + mx] === '#')
+    for (const [x, y] of nestedLoop(2, 0, [
+      t[0].length - monster[0].length - 1,
+      t.length - monster.length - 1
+    ])) {
+      const match = monster.every((line, my) =>
+        line.every((c, mx) => c !== '#' || t[y + my][x + mx] === '#')
+      )
+      if (match) {
+        found = true
+        monster.forEach((line, my) =>
+          line.forEach((c, mx) => {
+            if (c === '#') t[y + my][x + mx] = 'O'
+          })
         )
-        if (match) {
-          found = true
-          monster.forEach((line, my) =>
-            line.forEach((c, mx) => {
-              if (c === '#') t[y + my][x + mx] = 'O'
-            })
-          )
-        }
       }
     }
     if (found) return t
@@ -189,13 +187,17 @@ export const Part2 = () =>
       )
       const mapWithMonsters = output2dArray(findSeaMonsters(map)!)
       const result = mapWithMonsters.match(/#/gu)!.length
+      const outputMap: Record<string, VNode<any> | null> = {
+        '.': m('span' + z`color blue`, '.'),
+        O: m('strong' + z`color green`, 'O')
+      }
       return m(
         'div',
         m('strong', result),
         ' #s are not part of a sea monster.',
         m(
           Visualize,
-          [...mapWithMonsters].map((c) => (c === 'O' ? m('strong', c) : c))
+          [...mapWithMonsters].map((c) => outputMap[c] || c)
         )
       )
     }
