@@ -118,7 +118,7 @@ const findSeaMonsters = (tile: Tile) => {
       ..................O.
       O....OO....OO....OOO
       .O..O..O..O..O..O...
-    `.trim()
+    `
   )
 
   for (const t of getTransforms(tile)) {
