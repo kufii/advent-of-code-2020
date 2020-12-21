@@ -115,9 +115,9 @@ const merge = (tiles: Tile[][]) =>
 const findSeaMonsters = (tile: Tile) => {
   const monster = parse2dArray(
     dedent`
-      ..................#.
-      #....##....##....###
-      .#..#..#..#..#..#...
+      ..................O.
+      O....OO....OO....OOO
+      .O..O..O..O..O..O...
     `.trim()
   )
 
@@ -128,13 +128,13 @@ const findSeaMonsters = (tile: Tile) => {
       t.length - monster.length - 1
     ])) {
       const match = monster.every((line, my) =>
-        line.every((c, mx) => c !== '#' || t[y + my][x + mx] === '#')
+        line.every((c, mx) => c === '.' || t[y + my][x + mx] === '#')
       )
       if (match) {
         found = true
         monster.forEach((line, my) =>
           line.forEach((c, mx) => {
-            if (c === '#') t[y + my][x + mx] = 'O'
+            if (c !== '.') t[y + my][x + mx] = c
           })
         )
       }
