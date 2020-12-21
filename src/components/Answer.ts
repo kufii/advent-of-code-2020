@@ -10,7 +10,7 @@ export const Answer = ({ children }: Props) =>
     'span',
     m('strong', children),
     m(
-      'button.btn.btn-link.m-0.p-0.ml-1' + z`height inherit`,
+      'button.btn.btn-link.p-0.ml-1' + z`height inherit`,
       { onClick: () => navigator.clipboard.writeText(children) },
       m(Icon, 'copy')
     )
