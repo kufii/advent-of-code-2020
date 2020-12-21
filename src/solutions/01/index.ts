@@ -1,6 +1,7 @@
 import { m } from '/vdom'
 import input from './input'
 import { nestedLoop, sum } from '/utilities'
+import { Answer } from '/components'
 
 const parseInput = () => input.split('\n').map(Number)
 
@@ -20,7 +21,7 @@ export const Part1 = () => {
   return m(
     'div',
     `Numbers ${n1} and ${n2} sum to 2020. Result is `,
-    m('strong', n1 * n2),
+    m(Answer, n1 * n2),
     '.'
   )
 }
@@ -30,7 +31,7 @@ export const Part2 = () => {
   return m(
     'div',
     `Numbers ${n1}, ${n2}, and ${n3} sum to 2020. Result is `,
-    m('strong', n1 * n2 * n3),
+    m(Answer, n1 * n2 * n3),
     '.'
   )
 }

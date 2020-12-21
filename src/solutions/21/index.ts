@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { m } from '/vdom'
 
 interface Food {
@@ -81,7 +82,7 @@ export const Part1 = () => {
   return m(
     'div',
     'Definitively safe ingredients appear ',
-    m('strong', result),
+    m(Answer, result),
     ' times.'
   )
 }
@@ -94,7 +95,7 @@ export const Part2 = () => {
     'div',
     allergens.map((a) => `${allergenMap.get(a)} contains ${a}`).join(', '),
     '. The canonical dangerous ingredients list is ',
-    m('strong', allergens.map((a) => allergenMap.get(a)).join(',')),
+    m(Answer, allergens.map((a) => allergenMap.get(a)).join(',')),
     '.'
   )
 }

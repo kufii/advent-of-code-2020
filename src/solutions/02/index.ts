@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { m } from '/vdom'
 
 interface Pass {
@@ -37,7 +38,7 @@ export const Part1 = () =>
   m(
     'div',
     'There are ',
-    m('strong', parseInput().filter(isValidPass).length),
+    m(Answer, parseInput().filter(isValidPass).length),
     ' valid passwords.'
   )
 
@@ -45,6 +46,6 @@ export const Part2 = () =>
   m(
     'div',
     'There are ',
-    m('strong', parseInput().filter(isValidPass2).length),
+    m(Answer, parseInput().filter(isValidPass2).length),
     ' valid passwords using the 2nd validation method.'
   )

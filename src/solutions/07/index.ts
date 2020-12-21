@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { m } from '/vdom'
 
 type Bag = Record<string, number>
@@ -49,7 +50,7 @@ export const Part1 = () => {
   ).length
   return m(
     'div',
-    m('strong', count),
+    m(Answer, count),
     ' bags can eventually contain shiny gold bags.'
   )
 }
@@ -58,6 +59,6 @@ export const Part2 = () =>
   m(
     'div',
     'Shiny gold bags contain ',
-    m('strong', countBags(parseInput(), 'shiny gold')),
+    m(Answer, countBags(parseInput(), 'shiny gold')),
     ' other bags.'
   )

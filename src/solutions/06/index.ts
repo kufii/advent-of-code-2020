@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { sum } from '/utilities'
 import { m } from '/vdom'
 
@@ -11,7 +12,7 @@ export const Part1 = () =>
     'div',
     'The sum of unique questions the groups answered yes to is ',
     m(
-      'strong',
+      Answer,
       parseInput()
         .map((group) => getUniqueQuestions(group).size)
         .reduce(sum)
@@ -24,7 +25,7 @@ export const Part2 = () =>
     'div',
     'The sum of unique questions where the entire group answered yes is ',
     m(
-      'strong',
+      Answer,
       parseInput()
         .map(
           (group) =>

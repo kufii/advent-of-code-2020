@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { product, sum } from '/utilities'
 import { m } from '/vdom'
 
@@ -81,7 +82,7 @@ export const Part1 = () => {
   return m(
     'div',
     'The ticket scanning error rate is ',
-    m('strong', errorRate),
+    m(Answer, errorRate),
     '.'
   )
 }
@@ -99,7 +100,7 @@ export const Part2 = () => {
   return m(
     'div',
     "The product of my ticket's departure values is ",
-    m('strong', result),
+    m(Answer, result),
     '.'
   )
 }

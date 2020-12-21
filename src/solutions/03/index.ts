@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { parse2dArray } from '/utilities'
 import { m } from '/vdom'
 
@@ -26,7 +27,7 @@ export const Part1 = () =>
   m(
     'div',
     'Following a slope of right 3 and down 1, you will encounter ',
-    m('strong', getNumTrees(parse2dArray(input), [{ x: 3, y: 1 }])),
+    m(Answer, getNumTrees(parse2dArray(input), [{ x: 3, y: 1 }])),
     ' trees.'
   )
 
@@ -35,7 +36,7 @@ export const Part2 = () =>
     'div',
     'Multiplying the number of trees in all slopes, the result is ',
     m(
-      'strong',
+      Answer,
       getNumTrees(parse2dArray(input), [
         { x: 1, y: 1 },
         { x: 3, y: 1 },

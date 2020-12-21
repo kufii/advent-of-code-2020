@@ -44,7 +44,7 @@ export const Dropdown = ({
       `button.btn.btn-link.dropdown-toggle.text-${textColor}`,
       { onClick: () => setOpen(true) },
       items.find(({ key }) => key === selected)?.text,
-      m(Icon, { name: 'caret' })
+      m(Icon, 'caret')
     ),
     m(
       `ul.menu.text-${menuTextColor}`,

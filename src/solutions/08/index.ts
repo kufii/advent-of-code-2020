@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { m } from '/vdom'
 
 interface Command {
@@ -48,7 +49,7 @@ export const Part1 = () =>
   m(
     'div',
     'The accumulator value is ',
-    m('strong', getValueBeforeLoop(parseInput())),
+    m(Answer, getValueBeforeLoop(parseInput())),
     ' before the program infinite loops.'
   )
 
@@ -56,6 +57,6 @@ export const Part2 = () =>
   m(
     'div',
     'The final value after fixing the program is ',
-    m('strong', findExpectedResult(parseInput())),
+    m(Answer, findExpectedResult(parseInput())),
     '.'
   )

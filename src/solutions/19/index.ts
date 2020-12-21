@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { m } from '/vdom'
 
 const parseInput = () => {
@@ -42,7 +43,7 @@ export const Part1 = () => {
   const { rules, strings } = parseInput()
   return m(
     'div',
-    m('strong', getNumMatches(rules, strings, 0)),
+    m(Answer, getNumMatches(rules, strings, 0)),
     ' messages match rule 0.'
   )
 }
@@ -54,7 +55,7 @@ export const Part2 = () => {
   return m(
     'div',
     'After updating rules 8 and 11, ',
-    m('strong', getNumMatches(rules, strings, 0)),
+    m(Answer, getNumMatches(rules, strings, 0)),
     ' messages match rule 0.'
   )
 }

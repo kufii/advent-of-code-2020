@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { nestedLoop, sum } from '/utilities'
 import { m } from '/vdom'
 
@@ -29,7 +30,7 @@ export const Part1 = () =>
   m(
     'div',
     "The first number that isn't the sum of 2 of the previous 25 numbers is ",
-    m('strong', findBrokenNum(parseInput())),
+    m(Answer, findBrokenNum(parseInput())),
     `.`
   )
 
@@ -41,7 +42,7 @@ export const Part2 = () => {
   return m(
     'div',
     `The set [${set.join(', ')}] sums ${broken}. The encryption weakness is `,
-    m('strong', result),
+    m(Answer, result),
     `.`
   )
 }

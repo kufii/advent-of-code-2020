@@ -1,6 +1,6 @@
 import input from './input'
 import dedent from 'dedent'
-import { Visualize } from '/components'
+import { Answer, Visualize } from '/components'
 import {
   clone2dArray,
   make2dArray,
@@ -152,7 +152,7 @@ export const Part1 = () => {
   return m(
     'div',
     'The product of the keys in the 4 corners is ',
-    m('strong', result),
+    m(Answer, result),
     '.',
     m(Visualize, merged)
   )
@@ -177,7 +177,7 @@ export const Part2 = () => {
   ])
   return m(
     'div',
-    m('strong', result),
+    m(Answer, result),
     ' #s are not part of a sea monster.',
     m(
       Visualize,

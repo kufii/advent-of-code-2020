@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import input from './input'
+import { Answer } from '/components'
 import { m } from '/vdom'
 
 const parseInput = () => input.split(',').map(Number)
@@ -24,7 +25,7 @@ export const Part1 = () => {
   return m(
     'div',
     'The number read at the 2020th round is ',
-    m('strong', num),
+    m(Answer, num),
     '.'
   )
 }
@@ -51,7 +52,7 @@ export const Part2 = () => {
       : m(
           'span',
           'The number read at the 30000000th round is ',
-          m('strong', num),
+          m(Answer, num),
           '.'
         )
   )

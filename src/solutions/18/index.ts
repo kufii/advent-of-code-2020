@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { sum } from '/utilities'
 import { m } from '/vdom'
 
@@ -40,7 +41,7 @@ export const Part1 = () =>
     'div',
     'The sum of all the homework problems is ',
     m(
-      'strong',
+      Answer,
       parseInput()
         .map((str) => run(str))
         .reduce(sum)
@@ -53,7 +54,7 @@ export const Part2 = () =>
     'div',
     'The sum of all the homework problems with order of operations is ',
     m(
-      'strong',
+      Answer,
       parseInput()
         .map((str) => run(str, true))
         .reduce(sum)

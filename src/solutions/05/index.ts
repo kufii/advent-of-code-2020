@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { maxBy, sortNum } from '/utilities'
 import { m } from '/vdom'
 
@@ -34,7 +35,7 @@ export const Part1 = () => {
   return m(
     'div',
     `The boarding pass ${pass} has the highest seat ID of `,
-    m('strong', seatId),
+    m(Answer, seatId),
     '.'
   )
 }
@@ -43,6 +44,6 @@ export const Part2 = () =>
   m(
     'div',
     'The one empty seat is seat ID ',
-    m('strong', findMissingSeat(parseInput().map((pass) => findSeat(pass)))),
+    m(Answer, findMissingSeat(parseInput().map((pass) => findSeat(pass)))),
     '.'
   )

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import input from './input'
+import { Answer } from '/components'
 import { fastMax, fastMin, nestedLoop, parse2dArray } from '/utilities'
 import { m } from '/vdom'
 
@@ -103,7 +104,7 @@ export const Part1 = () =>
   m(
     'div',
     'After 6 cycles, there are ',
-    m('strong', [...run(parseInput())][0]),
+    m(Answer, [...run(parseInput())][0]),
     ' active cubes in the 3-dimensional space.'
   )
 
@@ -127,7 +128,7 @@ export const Part2 = () => {
       ? m(
           'span',
           'After 6 cycles, there are ',
-          m('strong', result),
+          m(Answer, result),
           ' active cubes in the 4-dimensional space.'
         )
       : 'Running...'

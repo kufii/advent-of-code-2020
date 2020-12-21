@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { m } from '/vdom'
 
 const parseInput = (): Record<string, string>[] =>
@@ -53,7 +54,7 @@ export const Part1 = () =>
   m(
     'div',
     'There are ',
-    m('strong', parseInput().filter(hasRequiredFields).length),
+    m(Answer, parseInput().filter(hasRequiredFields).length),
     ' passports with all required fields.'
   )
 
@@ -61,6 +62,6 @@ export const Part2 = () =>
   m(
     'div',
     'There are ',
-    m('strong', parseInput().filter(isValidPassport).length),
+    m(Answer, parseInput().filter(isValidPassport).length),
     ' valid passports.'
   )

@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { lcm } from '/utilities'
 import { m } from '/vdom'
 
@@ -47,7 +48,7 @@ export const Part1 = () => {
   return m(
     'div',
     `Starting at ${earliest}, the first bus you can take is #${bus} at ${time} minutes. Result is `,
-    m('strong', result),
+    m(Answer, result),
     '.'
   )
 }
@@ -56,6 +57,6 @@ export const Part2 = () =>
   m(
     'div',
     'The earliest time that matches the timetable is ',
-    m('strong', findEarliestTimetableMatch(parseInput().busses)),
+    m(Answer, findEarliestTimetableMatch(parseInput().busses)),
     ' minutes.'
   )

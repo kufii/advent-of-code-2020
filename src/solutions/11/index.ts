@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import input from './input'
-import { Visualize } from '/components'
+import { Answer, Visualize } from '/components'
 import { nestedLoop, output2dArray, parse2dArray } from '/utilities'
 import { m } from '/vdom'
 
@@ -114,7 +114,7 @@ const Solution = ({
       m(
         'div.mb-2',
         'After the chaos has settled there are ',
-        m('strong', output2dArray(seats!).match(/#/gu)!.length),
+        m(Answer, output2dArray(seats!).match(/#/gu)!.length),
         ' occupied seats.'
       ),
     m(

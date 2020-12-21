@@ -19,7 +19,7 @@ export const ViewDay = ({ day }: Props) => {
         m(
           'a',
           { href: 'https://adventofcode.com/2020/day/' + day, ...newTab },
-          m(Icon, { name: 'link' })
+          m(Icon, 'link')
         )
       ),
       m('div', [

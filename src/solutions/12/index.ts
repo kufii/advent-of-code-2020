@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { manhattanDistance, mod, Point, rotate } from '/utilities'
 import { m } from '/vdom'
 
@@ -68,7 +69,7 @@ export const Part1 = () =>
   m(
     'div',
     'After directing the ship, the Manhattan distance to where it started is ',
-    m('strong', directShip(parseInput())),
+    m(Answer, directShip(parseInput())),
     '.'
   )
 
@@ -76,6 +77,6 @@ export const Part2 = () =>
   m(
     'div',
     'After directing the ship using a waypoint, the Manhattan distance to where it started is ',
-    m('strong', directShipWithWaypoint(parseInput())),
+    m(Answer, directShipWithWaypoint(parseInput())),
     '.'
   )

@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { sortNum, sum } from '/utilities'
 import { m } from '/vdom'
 
@@ -33,7 +34,7 @@ export const Part1 = () => {
   return m(
     'div',
     `There are ${num1Jolt} 1-jolt differences and ${num3Jolt} 3-jolt differences. The result is `,
-    m('strong', num1Jolt * num3Jolt),
+    m(Answer, num1Jolt * num3Jolt),
     '.'
   )
 }
@@ -42,6 +43,6 @@ export const Part2 = () =>
   m(
     'div',
     'There are ',
-    m('strong', getNumArrangements(parseInput())),
+    m(Answer, getNumArrangements(parseInput())),
     ' distinct arrangements of joltage adapters.'
   )

@@ -1,4 +1,5 @@
 import input from './input'
+import { Answer } from '/components'
 import { replaceAt, sum } from '/utilities'
 import { m } from '/vdom'
 
@@ -62,7 +63,7 @@ export const Part1 = () =>
   m(
     'div',
     'The sum of all memory addresses after running the program is ',
-    m('strong', run(parseInput())),
+    m(Answer, run(parseInput())),
     '.'
   )
 
@@ -70,6 +71,6 @@ export const Part2 = () =>
   m(
     'div',
     'The sum of all memory addresses after running version 2 of the program is ',
-    m('strong', runVersion2(parseInput())),
+    m(Answer, runVersion2(parseInput())),
     '.'
   )
