@@ -1,7 +1,5 @@
 import input from './input'
 import dedent from 'dedent'
-import { FunctionComponent, VNode } from 'preact'
-import { useEffect, useState } from 'preact/hooks'
 import { Visualize } from '/components'
 import {
   clone2dArray,
@@ -18,7 +16,6 @@ interface TileWithKey {
   key: number
   tile: Tile
 }
-type Stitched = (TileWithKey | null)[][]
 
 const parseInput = (): TileWithKey[] =>
   input.split('\n\n').map((block) => ({
@@ -51,7 +48,26 @@ const topMatches = (tile: Tile, matches: Tile) =>
 const leftMatches = (tile: Tile, matches: Tile) =>
   tile.every((line, y) => matches[y][matches[y].length - 1] === line[0])
 
-const stitch = function* (tiles: TileWithKey[], yieldEvery = 100) {
+const getEdges = (tile: Tile) => [
+  tile[0].join(''),
+  tile[tile.length - 1].join(''),
+  tile.map((row) => row[0]).join(''),
+  tile.map((row) => row[row.length - 1]).join('')
+]
+
+const isCorner = (tiles: TileWithKey[], tile: TileWithKey) =>
+  getEdges(tile.tile).filter((edge) =>
+    tiles
+      .filter((t) => t.key !== tile.key)
+      .every(
+        (t) =>
+          !getEdges(t.tile).some(
+            (edge2) => edge === edge2 || edge === [...edge2].reverse().join('')
+          )
+      )
+  ).length === 2
+
+const stitch = (tiles: TileWithKey[]) => {
   const size = Math.sqrt(tiles.length)
   const getPos = (index: number) => ({
     x: index % size,
@@ -62,15 +78,14 @@ const stitch = function* (tiles: TileWithKey[], yieldEvery = 100) {
       [...getTransforms(tile)].map((tile) => ({ key, tile }))
     )
 
-  let n = 0
-  for (const start of toTransformArray(tiles)) {
+  const corner = tiles.find((tile) => isCorner(tiles, tile))!
+  for (const start of toTransformArray([corner])) {
     const array = make2dArray<TileWithKey | null>(size, size, null)
     const keys = new Set([start.key])
     array[0][0] = start
     let i = 1
 
     while (i < tiles.length) {
-      if (n++ % yieldEvery === 0) yield
       const { x, y } = getPos(i)
       const remainingTiles = tiles.filter(({ key }) => !keys.has(key))
       const next = toTransformArray(remainingTiles).find(
@@ -84,7 +99,7 @@ const stitch = function* (tiles: TileWithKey[], yieldEvery = 100) {
       i++
     }
 
-    if (i >= tiles.length) return yield array
+    if (i >= tiles.length) return array
   }
 }
 
@@ -128,77 +143,45 @@ const findSeaMonsters = (tile: Tile) => {
   }
 }
 
-const StitchedLoader = ({
-  render
-}: {
-  render: FunctionComponent<{ stitched: Stitched }>
-}) => {
-  const [stitched, setStitched] = useState<Stitched | null>(null)
-
-  useEffect(() => {
-    const gen = stitch(parseInput())
-    const interval = setInterval(() => {
-      const { value, done } = gen.next()
-      if (value) {
-        setStitched(value)
-        clearInterval(interval)
-      } else if (done) {
-        clearInterval(interval)
-      }
-    }, 0)
-    return () => clearInterval(interval)
-  }, [])
-
-  if (!stitched) return m('div', 'Running...')
-
-  return m(render, { stitched })
+export const Part1 = () => {
+  const stitched = stitch(parseInput())!
+  const result = [stitched[0], stitched[stitched.length - 1]]
+    .flatMap((line) => [line[0]!.key, line[line.length - 1]!.key])
+    .reduce(product)
+  const merged = merge(stitched.map((tileRow) => tileRow.map((t) => t!.tile)))
+  return m(
+    'div',
+    'The product of the keys in the 4 corners is ',
+    m('strong', result),
+    '.',
+    m(Visualize, merged)
+  )
 }
 
-export const Part1 = () =>
-  m(StitchedLoader, {
-    render: ({ stitched }: { stitched: Stitched }) => {
-      const result = [stitched[0], stitched[stitched.length - 1]]
-        .flatMap((line) => [line[0]!.key, line[line.length - 1]!.key])
-        .reduce(product)
-      const merged = merge(
-        stitched.map((tileRow) => tileRow.map((t) => t!.tile))
-      )
-      return m(
-        'div',
-        'The product of the keys in the 4 corners is ',
-        m('strong', result),
-        '.',
-        m(Visualize, merged)
-      )
-    }
-  })
-
-export const Part2 = () =>
-  m(StitchedLoader, {
-    render: ({ stitched }: { stitched: Stitched }) => {
-      const map = parse2dArray(
-        merge(
-          stitched.map((tileRow) =>
-            tileRow.map((t) =>
-              t!.tile.slice(1, -1).map((line) => line.slice(1, -1))
-            )
-          )
+export const Part2 = () => {
+  const stitched = stitch(parseInput())!
+  const map = parse2dArray(
+    merge(
+      stitched.map((tileRow) =>
+        tileRow.map((t) =>
+          t!.tile.slice(1, -1).map((line) => line.slice(1, -1))
         )
       )
-      const mapWithMonsters = output2dArray(findSeaMonsters(map)!)
-      const result = mapWithMonsters.match(/#/gu)!.length
-      const outputMap: Record<string, VNode<any> | null> = {
-        '.': m('span' + z`color blue`, '.'),
-        O: m('strong' + z`color green`, 'O')
-      }
-      return m(
-        'div',
-        m('strong', result),
-        ' #s are not part of a sea monster.',
-        m(
-          Visualize,
-          [...mapWithMonsters].map((c) => outputMap[c] || c)
-        )
-      )
-    }
-  })
+    )
+  )
+  const mapWithMonsters = output2dArray(findSeaMonsters(map)!)
+  const result = mapWithMonsters.match(/#/gu)!.length
+  const outputMap = new Map([
+    ['.', m('span' + z`color blue`, '.')],
+    ['O', m('strong' + z`color green`, 'O')]
+  ])
+  return m(
+    'div',
+    m('strong', result),
+    ' #s are not part of a sea monster.',
+    m(
+      Visualize,
+      [...mapWithMonsters].map((c) => outputMap.get(c) || c)
+    )
+  )
+}
