@@ -60,7 +60,6 @@ const getAllergenMap = (foods: Food[]) => {
         .filter((f) => f.allergens.includes(nextAllergen))
         .every((f) => f.ingredients.includes(i))
     )
-    if (!potentialIngredients.length) return null
     for (const i of potentialIngredients) {
       const newMap = new Map(map)
       newMap.set(nextAllergen, i)
