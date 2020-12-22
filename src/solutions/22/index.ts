@@ -12,10 +12,8 @@ const calculatePoints = (hand: number[]) =>
     .map((c, i) => c * (i + 1))
     .reduce(sum)
 
-const getWinner = (hand1: number[], hand2: number[]): [1 | 2, number] => {
-  const winner = hand1.length ? 1 : 2
-  return [winner, calculatePoints(winner === 1 ? hand1 : hand2)]
-}
+const getWinner = (hand1: number[], hand2: number[]): [1 | 2, number] =>
+  hand1.length ? [1, calculatePoints(hand1)] : [2, calculatePoints(hand2)]
 
 const play = (hand1: number[], hand2: number[]) => {
   while (hand1.length && hand2.length) {
