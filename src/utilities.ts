@@ -60,6 +60,8 @@ export const minBy = <T>(cb: (item: T) => number) => (a: T, b: T) =>
 
 export const sortNum = (a: number, b: number) => a - b
 
+export const sortNumDesc = (a: number, b: number) => b - a
+
 export const mod = (n: number, mod: number) => ((n % mod) + mod) % mod
 
 export const degToRad = (degrees: number) => (Math.PI / 180) * degrees
