@@ -1,3 +1,1 @@
-export default `
-215694783
-`.trim()
+export default '215694783'
