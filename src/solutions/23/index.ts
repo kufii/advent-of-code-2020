@@ -84,22 +84,18 @@ const run = (cups: number[], largestCup?: number, times = 100) => {
   return list.toArray()
 }
 
-export const Part1 = () => {
-  const cups = run(parseInput())
-  return m(
+export const Part1 = () =>
+  m(
     'div',
     'After 100 moves, the cups after cup 1 are ',
-    m(Answer, cups.slice(1).join('')),
+    m(Answer, run(parseInput()).slice(1).join('')),
     '.'
   )
-}
 
-export const Part2 = () => {
-  const cups = run(parseInput(), 1000000, 10000000).slice(1, 3)
-  return m(
+export const Part2 = () =>
+  m(
     'div',
     'After 10000000 moves, the product of the 2 cups after cup 1 is ',
-    m(Answer, cups.reduce(product)),
+    m(Answer, run(parseInput(), 1000000, 10000000).slice(1, 3).reduce(product)),
     '.'
   )
-}
