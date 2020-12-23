@@ -29,16 +29,13 @@ const rotate = (tile: Tile) =>
   tile[0].map((_, index) => tile.map((row) => row[index]).reverse())
 
 const getTransforms = function* (tile: Tile) {
-  yield tile
   for (let n = 0; n < 2; n++) {
+    yield tile
     for (let r = 0; r < 3; r++) {
       tile = rotate(tile)
       yield tile
     }
-    if (n === 0) {
-      tile = flip(tile)
-      yield tile
-    }
+    tile = flip(tile)
   }
 }
 
