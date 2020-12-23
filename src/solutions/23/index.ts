@@ -92,10 +92,14 @@ export const Part1 = () =>
     '.'
   )
 
-export const Part2 = () =>
-  m(
+export const Part2 = () => {
+  const cups = run(parseInput(), 1000000, 10000000).slice(1, 3)
+  return m(
     'div',
-    'After 10000000 moves, the product of the 2 cups after cup 1 is ',
-    m(Answer, run(parseInput(), 1000000, 10000000).slice(1, 3).reduce(product)),
+    `After 10000000 moves, the 2 cups after cup 1 are ${cups.join(
+      ' and '
+    )}. The product is `,
+    m(Answer, cups.reduce(product)),
     '.'
   )
+}
