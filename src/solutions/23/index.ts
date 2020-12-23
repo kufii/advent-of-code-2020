@@ -7,8 +7,8 @@ const parseInput = () => input.split('').map(Number)
 
 class CupList {
   list: Record<number, { next: number; prev: number }> = {}
+
   constructor(arr: number[]) {
-    this.list = {}
     arr.forEach((c, i) => {
       this.list[c] = {
         next: arr[mod(i + 1, arr.length)],
