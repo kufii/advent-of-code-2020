@@ -36,14 +36,14 @@ const getCoord = (direction: string[]) => {
   return pos
 }
 
-const getCoords = (directions: string[][]) => {
-  const coords = new Map<string, boolean>()
+const getCoords = (directions: string[][]) =>
   directions
     .map(getCoord)
     .map(key)
-    .forEach((pos) => coords.set(pos, !coords.get(pos)))
-  return coords
-}
+    .reduce(
+      (acc, pos) => acc.set(pos, !acc.get(pos)),
+      new Map<string, boolean>()
+    )
 
 const getNeighbors = ({ x, y }: Pos) =>
   [
