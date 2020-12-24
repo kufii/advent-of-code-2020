@@ -1,59 +1,50 @@
 import input from './input'
 import { Answer } from '/components'
-import { mod, nTimes, product, range } from '/utilities'
+import { nTimes, product, range } from '/utilities'
 import { m } from '/vdom'
 
 const parseInput = () => input.split('').map(Number)
 
 class CupList {
-  list: Record<number, { next: number; prev: number }> = {}
+  list: Record<number, number> = {}
 
   constructor(arr: number[]) {
     arr.forEach((c, i) => {
-      this.list[c] = {
-        next: arr[mod(i + 1, arr.length)],
-        prev: arr[mod(i - 1, arr.length)]
-      }
+      this.list[c] = arr[(i + 1) % arr.length]
     })
   }
 
-  get(n: number) {
+  next(n: number) {
     return this.list[n]
   }
 
-  splice(at: number, length: number) {
+  slice(at: number, length: number) {
     const result: number[] = []
     nTimes(length, () => {
-      const next = this.list[at].next
+      const next = this.list[at]
       result.push(next)
       at = next
     })
-    const prev = this.list[result[0]].prev
-    const next = this.list[result[length - 1]].next
-    this.list[prev].next = next
-    this.list[next].prev = prev
     return result
+  }
+
+  splice(at: number, length: number) {
+    const removed = this.slice(at, length)
+    this.list[at] = this.list[removed[removed.length - 1]]
+    return removed
   }
 
   insert(at: number, arr: number[]) {
-    const next = this.list[at].next
+    const before = this.list[at]
     arr.forEach((n) => {
-      this.list[at].next = n
-      this.list[n].prev = at
-      this.list[n].next = next
-      this.list[next].prev = n
+      this.list[at] = n
       at = n
     })
+    this.list[at] = before
   }
 
   toArray() {
-    const result: number[] = []
-    let current = 1
-    do {
-      result.push(current)
-      current = this.list[current].next
-    } while (current !== 1)
-    return result
+    return this.slice(1, Object.keys(this.list).length)
   }
 }
 
@@ -78,7 +69,7 @@ const run = (cups: number[], largestCup?: number, times = 100) => {
     } while (removed.includes(dest))
 
     list.insert(dest, removed)
-    current = list.get(current).next
+    current = list.next(current)
   })
 
   return list.toArray()
@@ -88,12 +79,12 @@ export const Part1 = () =>
   m(
     'div',
     'After 100 moves, the cups after cup 1 are ',
-    m(Answer, run(parseInput()).slice(1).join('')),
+    m(Answer, run(parseInput()).slice(0, -1).join('')),
     '.'
   )
 
 export const Part2 = () => {
-  const cups = run(parseInput(), 1000000, 10000000).slice(1, 3)
+  const cups = run(parseInput(), 1000000, 10000000).slice(0, 2)
   return m(
     'div',
     `After 10000000 moves, the 2 cups after cup 1 are ${cups.join(
