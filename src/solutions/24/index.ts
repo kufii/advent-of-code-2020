@@ -97,6 +97,6 @@ export const Part2 = () => {
     'div',
     'After 100 days, ',
     m(Answer, getNumBlack(coords)),
-    ' tiles are flipped to the black side'
+    ' tiles are flipped to the black side.'
   )
 }
