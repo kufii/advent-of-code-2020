@@ -18,23 +18,24 @@ const unKey = (key: string) => {
 const parseInput = (): string[][] =>
   input.split('\n').map((line) => line.match(/(se|sw|ne|nw|e|w)/gu)!)
 
-const getCoord = (direction: string[]) => {
-  const pos = { x: 0, y: 0 }
-  direction.forEach((d) => {
-    if (d === 'w') {
-      pos.x--
-    } else if (d === 'e') {
-      pos.x++
-    } else if (d.startsWith('n')) {
-      pos.y--
-      if (d === 'ne') pos.x++
-    } else if (d.startsWith('s')) {
-      pos.y++
-      if (d === 'sw') pos.x--
-    }
-  })
-  return pos
-}
+const getCoord = (direction: string[]) =>
+  direction.reduce(
+    (pos, d) => {
+      if (d === 'w') {
+        pos.x--
+      } else if (d === 'e') {
+        pos.x++
+      } else if (d.startsWith('n')) {
+        pos.y--
+        if (d === 'ne') pos.x++
+      } else if (d.startsWith('s')) {
+        pos.y++
+        if (d === 'sw') pos.x--
+      }
+      return pos
+    },
+    { x: 0, y: 0 }
+  )
 
 const getCoords = (directions: string[][]) =>
   directions
