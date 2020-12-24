@@ -42,10 +42,6 @@ class CupList {
     })
     this.list[at] = before
   }
-
-  toArray() {
-    return this.slice(1, Object.keys(this.list).length)
-  }
 }
 
 const run = (cups: number[], largestCup?: number, times = 100) => {
@@ -72,14 +68,14 @@ const run = (cups: number[], largestCup?: number, times = 100) => {
     current = list.next(current)
   })
 
-  return list.toArray()
+  return list.slice(1, cups.length - 1)
 }
 
 export const Part1 = () =>
   m(
     'div',
     'After 100 moves, the cups after cup 1 are ',
-    m(Answer, run(parseInput()).slice(0, -1).join('')),
+    m(Answer, run(parseInput()).join('')),
     '.'
   )
 
