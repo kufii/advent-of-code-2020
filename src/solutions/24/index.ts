@@ -61,10 +61,9 @@ const tick = (coords: Map<string, boolean>) => {
     .filter(([, value]) => value)
     .map(([key]) => unKey(key))
   const axis: ['x', 'y'] = ['x', 'y']
-  const [minX, maxX, minY, maxY] = axis.flatMap((prop) => {
-    const arr = black.map((c) => c[prop])
-    return [fastMin(arr) - 1, fastMax(arr) + 1]
-  })
+  const [minX, maxX, minY, maxY] = axis
+    .map((prop) => black.map((c) => c[prop]))
+    .flatMap((arr) => [fastMin(arr) - 1, fastMax(arr) + 1])
 
   const newMap = new Map<string, boolean>()
   for (const [x, y] of nestedLoop(2, [minX, minY], [maxX, maxY])) {
